@@ -23,6 +23,7 @@
   display: flex;
   gap: 4rem;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .footer-links h4 {
@@ -58,7 +59,8 @@
 }
 
 .footer-logo {
-  height: 60px;
+  height: 81px;
+  margin-bottom: 18px;
 }
 
 .footer-brand-socials {
@@ -84,4 +86,20 @@
   padding-top: 1rem;
   font-size: 0.9rem;
   font-family: 'Karla', sans-serif;
+}
+
+@media (max-width: 767px) {
+.footer-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  margin-bottom: 2rem
+}
+.footer-brand {
+  margin-top: 18px;
+}
+.footer-logo {
+  margin-bottom: 10px;
+}
 }

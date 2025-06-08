@@ -150,6 +150,15 @@
   width: 100%;
 }
 
+@media (min-width: 1024px) {
+  .product-details-right h2 {
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    width: 100%;
+  }
+}
+
 .product-details-right .stars-row {
   display: flex;
   align-items: center;
@@ -453,4 +462,59 @@ details[open] .details-summary {
 
 .reviews-grid {
   margin: 32px 18px 32px 18px; /* top right bottom left */
+}
+
+/* Wishlist Button Styling */
+.product-details-right .wishlist-btn,
+.product-details-right button.border {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 2px solid #9854f6;
+  background: #f6edff;
+  color: #9854f6;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px;
+  padding: 8px 22px;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(152, 84, 246, 0.07);
+}
+
+.product-details-right .wishlist-btn:hover,
+.product-details-right button.border:hover {
+  background: #9854f6;
+  color: #fff;
+  border-color: #9854f6;
+}
+
+/* Star Styling */
+.product-details-right .stars,
+.product-details-right .flex.items-center.gap-2.text-purple-600 {
+  color: #9854f6;
+  font-size: 1.35rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.product-details-right .stars span,
+.product-details-right .flex.items-center.gap-2.text-purple-600 span {
+  color: #888;
+  font-size: 1rem;
+  margin-left: 8px;
+}
+
+/* Responsive for Wishlist Button */
+@media (max-width: 767px) {
+  .product-details-right .wishlist-btn,
+  .product-details-right button.border {
+    font-size: 0.95rem;
+    padding: 7px 14px;
+    border-radius: 6px;
+  }
+  .product-details-right .stars,
+  .product-details-right .flex.items-center.gap-2.text-purple-600 {
+    font-size: 1.1rem;
+  }
 }

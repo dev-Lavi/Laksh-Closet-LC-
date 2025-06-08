@@ -48,6 +48,19 @@ header img {
   }
 }
 
+/* Reduce header/nav height */
+header {
+  padding-top: 1.2rem !important;   /* ~py-3 */
+  padding-bottom: 1.2rem !important;
+  min-height: 72px !important;       /* Decrease from 100px */
+}
+
+/* Optionally, reduce logo height if needed */
+header img[alt="Laksh Closet Logo"] {
+  height: 70px !important;
+  max-height: 70px !important;
+}
+
 /* Sidebar Styling Improvements */
 
 /* Add spacing at the top of sidebar content */

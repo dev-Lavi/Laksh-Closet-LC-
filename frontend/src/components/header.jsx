@@ -21,7 +21,7 @@ function Header() {
 
   return (
     <>
-      <header className="flex justify-between items-center px-4 sm:px-6 md:px-8 py-6 bg-white border-b-8 border-gray-300 relative min-h-[100px] font-karla">
+      <header className="flex justify-between items-center px-4 sm:px-6 md:px-8 py-4 bg-white border-b-8 border-gray-300 relative min-h-[100px] font-karla">
         <div className="flex items-center gap-4 sm:gap-6 flex-1">
           <div className="hamburger-container flex items-center gap-3">
             <img src={hamburgerIcon} alt="Menu" className="w-7 cursor-pointer transition-transform hover:scale-110" onClick={toggleSidebar} />
@@ -30,7 +30,7 @@ function Header() {
         </div>
 
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          <img src={logo} alt="Laksh Closet Logo" className="h-20" />
+          <img src={logo} alt="Laksh Closet Logo" className="h-18" />
         </div>
 
         <div className="flex items-center gap-4 sm:gap-6 flex-1 justify-end relative">
