@@ -7,6 +7,8 @@
   box-shadow: 0 1px 4px rgba(0,0,0,0.03);
   margin-bottom: 5rem;
   margin-top: 3rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
   overflow: hidden;
   border-radius: 0;
 }
@@ -90,8 +92,8 @@
 }
 
 .product-qty-box button {
-  padding: 0 18px;
-  font-size: 2rem;
+  padding: 0 12px;
+  font-size: 1rem;
   font-weight: bold;
   color: #757575;
   background: none;
@@ -101,7 +103,7 @@
 }
 
 .product-qty-box input {
-  width: 48px;
+  width: 36px;
   text-align: center;
   border: none;
   font-size: 1rem;
@@ -240,12 +242,14 @@ details[open] .details-summary {
   border: 2px solid #bdbdbd;
   background: #fff;
   color: #222;
-  font-size: 1.2rem;
+  font-size: 0.85rem;
   font-weight: 500;
-  padding: 8px 22px;
-  border-radius: 8px;
+  padding: 5px 14px;
+  border-radius: 6px;
   transition: border 0.2s, background 0.2s, color 0.2s;
   outline: none;
+  min-width: 36px;
+  min-height: 32px;
 }
 
 .product-size-btn.selected {
@@ -258,6 +262,20 @@ details[open] .details-summary {
   cursor: not-allowed;
   color: #bdbdbd;
   background: #f8f8f8;
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 767px) {
+  .product-sizes-row {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .product-size-btn {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    min-width: 28px;
+    min-height: 26px;
+  }
 }
 
 @media (max-width: 767px) {
@@ -277,4 +295,162 @@ details[open] .details-summary {
   .details-list {
     margin-top: 18px;
   }
+}
+
+.gallery-images-row {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+/* Related Products Card (shared for mobile & desktop) */
+.related-product-card {
+  border: 1px solid #222;
+  background: #fff;
+  min-width: 260px;
+  max-width: 300px;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  position: relative;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.related-product-card.selected {
+  border: 2px solid #3b82f6;
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
+.related-product-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.related-product-info {
+  padding: px 18px 0 18px;
+  flex: 1;
+}
+
+.related-product-title {
+  font-size: 1.1rem;
+  color: #222;
+  margin-bottom: 12px;
+}
+
+.related-product-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 18px 18px 18px;
+  margin-top: 12px;
+}
+
+.related-product-price-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.related-product-price {
+  font-weight: 700;
+  color: #222;
+  font-size: 1.1rem;
+}
+
+.related-product-original-price {
+  text-decoration: line-through;
+  color: #bdbdbd;
+  font-size: 0.95rem;
+}
+
+.related-product-mrp {
+  color: #757575;
+  font-size: 0.9rem;
+}
+
+.related-product-add-btn {
+  background: none;
+  border: none;
+  color: #222;
+  font-weight: 500;
+  font-size: 1.05rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 18px;
+  transition: color 0.2s;
+}
+
+.related-product-add-btn:hover {
+  color: #9854f6;
+}
+
+.related-product-heart {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: none;
+  color: #d4cccc;
+  cursor: pointer;
+  margin: 4px;
+  border-radius: 50%;
+  z-index: 2;
+  transition: background 0.2s;
+}
+.related-product-heart:hover {
+  color: #9854f6;
+}
+
+@media (max-width: 767px) {
+  .related-product-card {
+    min-width: 220px;
+    max-width: 240px;
+  }
+  .related-product-img {
+    height: 240px;
+  }
+}
+
+.reviews-section {
+  margin: 48px 0 0 18px;
+}
+
+.review-card {
+  border: 1px solid #222;
+  border-radius: 8px;
+  background: #fff;
+  padding: 22px 24px 18px 24px;
+  margin-bottom: 24px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.review-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #222;
+  text-transform: uppercase;
+}
+
+.review-stars {
+  color: #9854f6;
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.review-comment {
+  color: #444;
+  font-size: 1rem;
+  margin-top: 2px;
+}
+
+.reviews-grid {
+  margin: 32px 18px 32px 18px; /* top right bottom left */
 }

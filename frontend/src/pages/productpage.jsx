@@ -34,10 +34,12 @@ const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [relatedStart, setRelatedStart] = useState(0);
+  const [desktopStart, setDesktopStart] = useState(0);
   const [selectedSize, setSelectedSize] = useState(
     product.sizes.find(s => s.available)?.label || ''
   );
   const { setCartItems } = useCart();
+  const desktopVisible = 4; // Number of cards to show at once on desktop
 
   const handleAddToCart = () => {
     setCartItems(prev => [...prev, { ...product, quantity }]);
@@ -73,7 +75,7 @@ const ProductPage = () => {
                 />
               </div>
               {/* Medium and up: show all images */}
-              <div className="hidden md:flex justify-center gap-8 flex-wrap md:flex-nowrap">
+              <div className="hidden md:flex justify-center gap-8 flex-wrap md:flex-nowrap gallery-images-row">
                 {product.gallery.slice(0, 3).map((src, index) => (
                   <img
                     key={index}
@@ -217,26 +219,26 @@ const ProductPage = () => {
                 style={{ scrollBehavior: 'smooth' }}
               >
                 {relatedProducts.map(prod => (
-                  <div key={prod.id} className="relative min-w-[250px] max-w-[300px] bg-white border shadow-sm p-4 text-center">
-                    {/* Heart icon button */}
-                    <button
-                      className="absolute top-3 right-3 text-gray-400 hover:text-purple-600 transition"
-                      aria-label="Add to favourites"
-                      // onClick={() => handleFavourite(prod)}
-                      type="button"
-                    >
-                      <Heart className="w-5 h-5" />
+                  <div key={prod.id} className={`related-product-card${galleryIndex === prod.id ? ' selected' : ''}`}>
+                    <button className="related-product-heart" aria-label="Add to favourites">
+                      <Heart className="w-6 h-6" />
                     </button>
                     <img
                       src={prod.image}
                       alt={prod.name}
-                      className="w-full h-80 object-cover mb-2"
+                      className="related-product-img"
                     />
-                    <div className="font-medium text-sm">{prod.name}</div>
-                    <div className="text-xs text-gray-500 mb-2">₹{prod.price}</div>
-                    <button className="w-full text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 py-1 px-3 transition">
-                      Add to cart
-                    </button>
+                    <div className="related-product-info">
+                      <div className="related-product-title">{prod.name}</div>
+                    </div>
+                    <div className="related-product-bottom">
+                      <div className="related-product-price-block">
+                        <span className="related-product-price">₹{prod.price}</span>
+                        <span className="related-product-original-price">₹{prod.price + 620}</span>
+                        <span className="related-product-mrp">MRP</span>
+                      </div>
+                      <button className="related-product-add-btn">Add to Bag</button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -252,42 +254,74 @@ const ProductPage = () => {
               </button>
             </div>
             {/* Desktop: grid as before */}
-            <div className="hidden md:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-12">
-              {relatedProducts.map(prod => (
-                <div key={prod.id} className="relative bg-white border shadow-sm p-4 text-center">
-                  {/* Heart icon button */}
-                  <button
-                    className="absolute top-3 right-3 text-gray-200 hover:text-purple-600 transition"
-                    aria-label="Add to favourites"
-                    // onClick={() => handleFavourite(prod)} // Implement this if you want to handle favourites
-                    type="button"
+            <div className="hidden md:block relative">
+              {/* Left Arrow */}
+              {desktopStart > 0 && (
+                <button
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white border rounded-full p-2 shadow hover:bg-gray-100"
+                  onClick={() => setDesktopStart(prev => Math.max(prev - 1, 0))}
+                  aria-label="Previous"
+                  type="button"
+                  style={{ marginLeft: '-32px' }}
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+              )}
+
+              {/* Product Grid */}
+              <div className="grid grid-cols-4 gap-8">
+                {relatedProducts.slice(desktopStart, desktopStart + desktopVisible).map(prod => (
+                  <div
+                    key={prod.id}
+                    className={`related-product-card${galleryIndex === prod.id ? ' selected' : ''}`}
                   >
-                    <Heart className="w-5 h-5" />
-                  </button>
-                  <img
-                    src={prod.image}
-                    alt={prod.name}
-                    className="w-full h-80 object-cover mb-2"
-                  />
-                  <div className="font-medium text-sm">{prod.name}</div>
-                  <div className="text-xs text-gray-500 mb-2">₹{prod.price}</div>
-                  <button className="w-full text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 py-1 px-3 rounded-md transition">
-                    Add to cart
-                  </button>
-                </div>
-              ))}
+                    <button className="related-product-heart" aria-label="Add to favourites">
+                      <Heart className="w-6 h-6" />
+                    </button>
+                    <img
+                      src={prod.image}
+                      alt={prod.name}
+                      className="related-product-img"
+                    />
+                    <div className="related-product-info">
+                      <div className="related-product-title">{prod.name}</div>
+                    </div>
+                    <div className="related-product-bottom">
+                      <div className="related-product-price-block">
+                        <span className="related-product-price">₹{prod.price}</span>
+                        <span className="related-product-original-price">₹{prod.price + 620}</span>
+                        <span className="related-product-mrp">MRP</span>
+                      </div>
+                      <button className="related-product-add-btn">Add to Bag</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Right Arrow */}
+              {desktopStart + desktopVisible < relatedProducts.length && (
+                <button
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white border rounded-full p-2 shadow hover:bg-gray-100"
+                  onClick={() => setDesktopStart(prev => Math.min(prev + 1, relatedProducts.length - desktopVisible))}
+                  aria-label="Next"
+                  type="button"
+                  style={{ marginRight: '-32px' }}
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              )}
             </div>
           </section>
 
           {/* Reviews */}
-          <section className="mb-20">
+          <section className="reviews-section">
             <h3 className="text-2xl font-semibold mb-4">REVIEWS</h3>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-6 reviews-grid">
               {product.reviews.map((review, i) => (
-                <div key={i} className="bg-white border rounded-md p-4 shadow-sm">
-                  <h4 className="font-semibold text-base">{review.name}</h4>
-                  <div className="text-purple-600">{'★'.repeat(review.rating)}</div>
-                  <p className="text-gray-700 mt-1">{review.comment}</p>
+                <div key={i} className="review-card">
+                  <h4>{review.name}</h4>
+                  <div className="review-stars">{'★'.repeat(review.rating)}</div>
+                  <div className="review-comment">{review.comment}</div>
                 </div>
               ))}
             </div>
