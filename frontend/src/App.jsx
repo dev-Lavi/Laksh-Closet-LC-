@@ -5,7 +5,7 @@ import Header from './components/header';
 import Footer from './components/footer';
 import { CartProvider } from './context/CartContext';
 
-import HomePage from './pages/homePage';
+import HomePage from './pages/homepage';
 import ProductPage from './pages/productpage'; // ✅ import your product page
 
 const Products = () => <div><h1>Our Products</h1></div>;
