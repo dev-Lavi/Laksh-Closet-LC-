@@ -1,0 +1,29 @@
+/* ProductPage.css */
+
+.quantity-btn {
+  @apply px-4 sm:px-6 py-3 text-2xl font-bold text-gray-600 hover:bg-gray-100 transition;
+}
+
+.quantity-input {
+  @apply w-14 text-center text-xl border-0 focus:outline-none;
+}
+
+.add-to-cart-btn {
+  @apply bg-purple-600 text-white text-lg font-semibold py-3 px-6 rounded-md w-full sm:w-auto transition hover:bg-purple-700;
+}
+
+.product-card {
+  @apply border rounded bg-white p-3 flex flex-col items-center shadow-sm;
+}
+
+.product-image {
+  @apply w-full h-48 object-cover rounded mb-2;
+}
+
+.related-btn {
+  @apply mt-2 bg-purple-600 text-white px-4 py-1 rounded-md text-sm hover:bg-purple-700 transition;
+}
+
+.review-card {
+  @apply p-6 border rounded bg-white shadow-sm pl-6;
+}

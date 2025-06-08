@@ -1,0 +1,93 @@
+/* header.css */
+
+/* Ensure hamburger and cart spacing */
+.hamburger-container {
+  padding-left: 12px;
+  padding-right: 8px;
+}
+
+.cart-container {
+  padding-right: 12px;
+}
+
+header img {
+  display: block;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+/* Default: hide both search icons */
+.search-icon-mobile,
+.search-icon-desktop {
+  display: none;
+}
+
+/* Mobile: show mobile search icon */
+@media (max-width: 1023px) {
+  .search-icon-mobile {
+    display: block;
+    width: 24px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .search-icon-mobile:hover {
+    transform: scale(1.1);
+  }
+}
+
+/* Desktop: show desktop search icon */
+@media (min-width: 1024px) {
+  .search-icon-desktop {
+    display: block;
+    width: 24px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .search-icon-desktop:hover {
+    transform: scale(1.1);
+  }
+}
+
+/* Sidebar Styling Improvements */
+
+/* Add spacing at the top of sidebar content */
+.sidebar {
+  margin-top: 40px;
+}
+
+/* Improve spacing between sections */
+.sidebar h3 {
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.sidebar ul {
+  padding-left: 0;
+  list-style: none;
+  margin-bottom: 24px;
+}
+
+.sidebar ul li {
+  padding: 6px 0;
+  transition: color 0.2s;
+}
+
+/* Center the social icons */
+.sidebar-social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* Divider spacing */
+.sidebar hr {
+  margin: 24px 0;
+  border-color: #d1d5db; /* Tailwind's gray-300 */
+}
+
+/* Login/Register spacing */
+.sidebar .auth-links {
+  margin-bottom: 24px;
+}
+
