@@ -64,13 +64,27 @@ function Header() {
         <h3 className="text-lg font-kanit mb-6 uppercase tracking-wide text-gray-800">Categories</h3>
 
         <ul className="space-y-4 text-gray-700 text-base">
-          <li className="cursor-pointer hover:text-gray-900">Products</li>
-          <li className="cursor-pointer hover:text-gray-900">Unisex</li>
-          <li className="cursor-pointer hover:text-gray-900">Baggy</li>
-          <li className="cursor-pointer hover:text-gray-900">Straight Fit</li>
-          <li className="cursor-pointer hover:text-gray-900">Bootcut</li>
-          <li className="cursor-pointer hover:text-gray-900">Ripped Jeans</li>
-          <li className="cursor-pointer hover:text-gray-900">Mom Jeans</li>
+          <li>
+            <Link to="/products" className="cursor-pointer hover:text-gray-900 block">Products</Link>
+          </li>
+          <li>
+            <Link to="/products/unisex" className="cursor-pointer hover:text-gray-900 block">Unisex</Link>
+          </li>
+          <li>
+            <Link to="/products/baggy" className="cursor-pointer hover:text-gray-900 block">Baggy</Link>
+          </li>
+          <li>
+            <Link to="/products/straight-fit" className="cursor-pointer hover:text-gray-900 block">Straight Fit</Link>
+          </li>
+          <li>
+            <Link to="/products/bootcut" className="cursor-pointer hover:text-gray-900 block">Bootcut</Link>
+          </li>
+          <li>
+            <Link to="/products/ripped-jeans" className="cursor-pointer hover:text-gray-900 block">Ripped Jeans</Link>
+          </li>
+          <li>
+            <Link to="/products/mom-jeans" className="cursor-pointer hover:text-gray-900 block">Mom Jeans</Link>
+          </li>
         </ul>
 
         <hr className="my-6 border-gray-300" />
