@@ -80,7 +80,7 @@ function Header() {
             <Link to="/products/bootcut" className="cursor-pointer hover:text-gray-900 block">Bootcut</Link>
           </li>
           <li>
-            <Link to="/products/ripped-jeans" className="cursor-pointer hover:text-gray-900 block">Ripped Jeans</Link>
+            <Link to="/products/ripped-jeans" className="cursor-pointer hover:text-gray-900 block">Ripped jeans</Link>
           </li>
           <li>
             <Link to="/products/mom-jeans" className="cursor-pointer hover:text-gray-900 block">Mom Jeans</Link>
