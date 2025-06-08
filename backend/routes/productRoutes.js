@@ -1,5 +1,12 @@
 import express from 'express';
-import Product from '../models/Product.js'; // Mongoose model
+import {
+  addProduct,
+  updateProduct
+} from '../controllers/productController.js';
+
+import Product from '../models/Product.js';
+import { protect, adminOnly } from '../middleware/authMiddleware.js';
+
 const router = express.Router();
 
 // @desc    Get all products
@@ -37,16 +44,12 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// @desc    Add new product
+// @desc    Add new product (Admin only)
 // @route   POST /api/products
-router.post('/', async (req, res) => {
-  try {
-    const product = new Product(req.body);
-    await product.save();
-    res.status(201).json(product);
-  } catch (err) {
-    res.status(400).json({ message: 'Failed to add product', error: err.message });
-  }
-});
+router.post('/', protect, adminOnly, addProduct);
+
+// @desc    Update product (Admin only)
+// @route   PUT /api/products/:id
+router.put('/:id', protect, adminOnly, updateProduct);
 
 export default router;
