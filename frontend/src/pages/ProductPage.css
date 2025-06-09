@@ -349,6 +349,8 @@ details[open] .details-summary {
   font-size: 1.1rem;
   color: #222;
   margin-bottom: 12px;
+  margin-left: 60px;
+  margin-top: 10px;
 }
 
 .related-product-bottom {

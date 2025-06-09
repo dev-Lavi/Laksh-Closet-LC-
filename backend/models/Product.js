@@ -6,10 +6,6 @@ const reviewSchema = new mongoose.Schema({
   comment: String
 }, { _id: false });
 
-const sizeSchema = new mongoose.Schema({
-  label: String,
-  available: Boolean
-}, { _id: false });
 
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -19,7 +15,7 @@ const productSchema = new mongoose.Schema({
   gallery: [String],
   category: String,
   reviews: [reviewSchema],
-  sizes: [sizeSchema]
+  sizes: [String] // ✅ Now just an array of strings like ["S", "M", "L"]
 }, {
   timestamps: true
 });

@@ -1,4 +1,5 @@
 import express from 'express';
+import multer from 'multer';
 import {
   addProduct,
   updateProduct
@@ -8,6 +9,10 @@ import Product from '../models/Product.js';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
+
+// Multer config (in-memory storage)
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 // @desc    Get all products
 // @route   GET /api/products
@@ -46,7 +51,7 @@ router.get('/:id', async (req, res) => {
 
 // @desc    Add new product (Admin only)
 // @route   POST /api/products
-router.post('/', protect, adminOnly, addProduct);
+router.post('/', protect, adminOnly, upload.array('images', 6), addProduct);
 
 // @desc    Update product (Admin only)
 // @route   PUT /api/products/:id
