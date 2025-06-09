@@ -1,0 +1,100 @@
+.add-product-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(152, 84, 246, 0.10), 0 1.5px 8px rgba(0,0,0,0.06);
+  border: 1.5px solid #e5d6fa;
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 480px;
+  width: 100%;
+  margin: 48px auto 48px auto;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+
+.add-product-card:hover {
+  box-shadow: 0 12px 36px rgba(152, 84, 246, 0.15), 0 2px 12px rgba(0,0,0,0.09);
+}
+
+.add-product-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.add-product-form label {
+  font-weight: 600;
+  color: #6b21a8;
+  margin-bottom: 0.3rem;
+  display: block;
+  font-size: 1rem;
+}
+
+.add-product-form input,
+.add-product-form textarea {
+  width: 100%;
+  border: 1.5px solid #d1b3fa;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
+  background: #faf8ff;
+  transition: border 0.2s, box-shadow 0.2s;
+  resize: none;
+}
+
+.add-product-form input:focus,
+.add-product-form textarea:focus {
+  border-color: #9854f6;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 0 2px #e5d6fa;
+}
+
+.add-product-form .input-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.add-product-form .input-row input {
+  width: 100%;
+  margin-bottom: 1.2rem;
+}
+
+.add-product-btn {
+  width: 100%;
+  background: linear-gradient(90deg, #9854f6 0%, #7f3afc 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 0.8rem 0;
+  border: none;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(152, 84, 246, 0.07);
+  cursor: pointer;
+}
+
+.add-product-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.add-product-btn:hover:not(:disabled) {
+  background: linear-gradient(90deg, #7f3afc 0%, #9854f6 100%);
+}
+
+@media (max-width: 600px) {
+  .add-product-card {
+    padding: 1.5rem 0.7rem 1.5rem 0.7rem;
+    margin: 32px 8px 32px 8px;
+    max-width: 98vw;
+  }
+  .add-product-form .input-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}

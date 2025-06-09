@@ -8,15 +8,15 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(async () => {
-  const existingAdmin = await User.findOne({ email: 'lavi2312042@akgec.ac.in' });
+  const existingAdmin = await User.findOne({ email: 'lakshcloset@gmail.com' });
 
   if (existingAdmin) {
     console.log('❌ Admin already exists');
   } else {
     const admin = new User({
-      name: 'Admin',
-      email: 'lavi2312042@akgec.ac.in',
-      password: 'admin123', // 👈 plain text here
+      name: 'Admin1',
+      email: 'lakshcloset@gmail.com',
+      password: 'admin321', // 👈 plain text here
       isAdmin: true
     });
 
