@@ -12,19 +12,40 @@ const AddProduct = () => {
     originalPrice: '',
     category: '',
     sizes: '',
-    images: null,
+    images: [],
   });
 
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === 'images') {
-      setFormData({ ...formData, images: files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
+const handleChange = (e) => {
+  const { name, value, files } = e.target;
+
+  if (name === 'images') {
+    const newFiles = Array.from(files);
+
+    // Combine old + new
+    const totalFiles = [...formData.images, ...newFiles];
+
+    // Filter unique files (by name and size to avoid duplicates)
+    const uniqueFiles = totalFiles.filter(
+      (file, index, self) =>
+        index ===
+        self.findIndex((f) => f.name === file.name && f.size === file.size)
+    );
+
+    if (uniqueFiles.length > 6) {
+      toast.warn('⚠️ Max 6 images allowed. Extra images ignored.', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
     }
-  };
+
+    setFormData({ ...formData, images: uniqueFiles.slice(0, 6) });
+  } else {
+    setFormData({ ...formData, [name]: value });
+  }
+};
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +59,7 @@ const AddProduct = () => {
     data.append('originalPrice', formData.originalPrice);
     data.append('category', formData.category);
     data.append('sizes', JSON.stringify(formData.sizes.split(',')));
-    data.append('images', formData.images);
+    formData.images.forEach((img) => data.append('images', img));
 
     try {
       const response = await axios.post(
@@ -64,7 +85,7 @@ const AddProduct = () => {
         originalPrice: '',
         category: '',
         sizes: '',
-        images: null,
+        images: [],
       });
 
     } catch (error) {
@@ -123,8 +144,57 @@ const AddProduct = () => {
               />
             </div>
           </div>
-          <label>Images</label>
-          <input type="file" name="images" onChange={handleChange} required />
+
+          <label>Images (max 6)</label>
+          <input
+            type="file"
+            name="images"
+            multiple
+            accept="image/*"
+            onChange={handleChange}
+            required
+          />
+          {formData.images.length > 0 && (
+            <>
+              <div style={{ marginBottom: '0.5rem', color: '#9854f6', fontWeight: 500 }}>
+                {formData.images.length} image{formData.images.length > 1 ? 's' : ''} selected
+              </div>
+              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '1rem' }}>
+                {formData.images.map((img, index) => (
+                  <div key={index} style={{ position: 'relative', display: 'inline-block' }}>
+                    <img
+                      src={URL.createObjectURL(img)}
+                      alt={`preview-${index}`}
+                      style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }}
+                    />
+                    <button
+                      onClick={() => {
+                        const updated = formData.images.filter((_, i) => i !== index);
+                        setFormData({ ...formData, images: updated });
+                      }}
+                      style={{
+                        position: 'absolute',
+                        top: 4,
+                        right: 4,
+                        background: 'red',
+                        color: 'white',
+                        border: 'none',
+                        padding: '2px 6px',
+                        fontSize: '12px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        zIndex: 2,
+                      }}
+                      type="button"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
           <label>Category</label>
           <input
             type="text"
@@ -152,7 +222,6 @@ const AddProduct = () => {
           </button>
         </form>
       </div>
-      {/* ✅ Toast Container here */}
       <ToastContainer />
     </div>
   );
