@@ -7,7 +7,8 @@ import banner2 from '../assets/banner2.svg';
 import banner3 from '../assets/banner3.svg';
 import banner4 from '../assets/banner4.svg';
 import banner5 from '../assets/banner5.svg';
-import { useCart } from '../context/CartContext'; 
+import { useCart } from '../context/CartContext';
+import './homepage.css';
 
 // BAGGY Products (pants1 to pants4)
 const baggyProducts = [
@@ -86,7 +87,7 @@ const newArrivals = [
   {
     name: 'Shadow Black Jeans',
     price: 1020,
-    sizes: ['28', '30', '32'],
+    sizes: ['34', '36','28', '30', '32'],
     availableSizes: ['28', '30', '32'],
     image: '/images/pants10.svg',
     description: 'Select Size'
@@ -158,17 +159,17 @@ const handleAddToCart = (product) => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="homepage-root">
       {/* Banner Slider */}
-      <div className="w-full flex items-center justify-center my-10 relative">
-        <div className="overflow-hidden w-[1260px]" ref={bannerRef}>
+      <div className="homepage-banner-section">
+        <div className="homepage-banner-slider" ref={bannerRef}>
           <div className="flex gap-[10px] transition-all duration-500 ease-in-out">
             {banners.map((src, index) => (
               <img
                 key={index}
                 src={src}
                 alt={`Banner ${index + 1}`}
-                className="w-[380px] h-[500px] object-cover flex-shrink-0"
+                className="homepage-banner-img"
               />
             ))}
           </div>
@@ -176,27 +177,24 @@ const handleAddToCart = (product) => {
       </div>
 
       {/* Category Sections */}
-<CategorySection
-  title="BAGGY"
-  products={baggyProducts}
-  link="/category/baggy"
-  onAddToCart={handleAddToCart}
-/>
-
-<CategorySection
-  title="STRAIGHT FIT"
-  products={straightFitProducts}
-  link="/category/straight-fit"
-  onAddToCart={handleAddToCart}
-/>
-
-<CategorySection
-  title="NEW ARRIVALS"
-  products={newArrivals}
-  link="/category/new-arrivals"
-  onAddToCart={handleAddToCart}
-/>
-
+      <CategorySection
+        title="BAGGY"
+        products={baggyProducts}
+        link="/category/baggy"
+        onAddToCart={handleAddToCart}
+      />
+      <CategorySection
+        title="STRAIGHT FIT"
+        products={straightFitProducts}
+        link="/category/straight-fit"
+        onAddToCart={handleAddToCart}
+      />
+      <CategorySection
+        title="NEW ARRIVALS"
+        products={newArrivals}
+        link="/category/new-arrivals"
+        onAddToCart={handleAddToCart}
+      />
     </div>
   );
 }

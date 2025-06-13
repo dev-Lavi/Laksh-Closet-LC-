@@ -109,13 +109,7 @@ function ProductCard({ product }) {
           <button
             onClick={handleAddToCart}
             disabled={!selectedSize}
-            className={`text-[13px] font-medium transition ${
-              selectedSize
-                ? addedToCart
-                  ? 'text-green-600'
-                  : 'text-black hover:underline'
-                : 'text-gray-500 cursor-not-allowed'
-            }`}
+            className={`product-card-add-btn${addedToCart ? ' added' : ''}`}
           >
             {addedToCart ? 'Added!' : selectedSize ? 'Add to Cart' : 'Select Size'}
           </button>
