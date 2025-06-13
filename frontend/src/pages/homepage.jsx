@@ -8,7 +8,7 @@ import banner3 from '../assets/banner3.svg';
 import banner4 from '../assets/banner4.svg';
 import banner5 from '../assets/banner5.svg';
 import { useCart } from '../context/CartContext';
-import './homepage.css';
+import './HomePage.css';
 
 // BAGGY Products (pants1 to pants4)
 const baggyProducts = [
