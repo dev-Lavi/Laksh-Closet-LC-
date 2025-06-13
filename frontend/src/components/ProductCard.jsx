@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import addtocartheart from '../assets/heart.svg';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
-import './productcard.css'; // ✅ make sure this is the correct filename
+import './ProductCard.css'; // ✅ make sure this is the correct filename
 
 function ProductCard({ product }) {
   const availableSizes = product.availableSizes || [];
