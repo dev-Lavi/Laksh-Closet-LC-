@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import ProductCard from './ProductCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import './categorysection.css';
+import './CategorySection.css';
 
 function CategorySection({ title, products }) {
   const scrollRef = useRef(null);
