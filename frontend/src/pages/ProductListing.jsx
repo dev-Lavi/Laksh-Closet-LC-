@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
     import { useNavigate } from 'react-router-dom';
-import './productlisting.css';
+import './ProductListing.css';
 
 const DEFAULT_SIZES = ['28', '30', '32', '34', '36'];
 
