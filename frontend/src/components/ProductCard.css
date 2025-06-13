@@ -1,178 +1,204 @@
 .product-card {
   background: #fff;
   width: 100%;
-  max-width: 350px;
-  padding: 1.5rem 1.2rem 1.2rem 1.2rem;
-  border: 1.5px solid #e5e7eb;
-  box-shadow: 0 2px 10px rgba(152, 84, 246, 0.04);
-  border-radius: 12px;
-  transition: box-shadow 0.18s, border 0.18s;
+  max-width: 390px; /* Slightly increased for more space */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+  transition: box-shadow 0.3s, transform 0.2s;
   position: relative;
-  font-family: 'Karla', 'Segoe UI', Arial, sans-serif;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
 .product-card:hover {
-  box-shadow: 0 6px 24px rgba(152, 84, 246, 0.11);
-  border-color: #d1b3fa;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
-.product-card .wishlist-btn {
+/* Wishlist Heart Button */
+.wishlist-btn {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 12px;
+  right: 12px;
   background: none;
   border: none;
   cursor: pointer;
   z-index: 10;
 }
 
-.product-card .wishlist-btn img {
-  width: 26px;
-  height: 26px;
-  transition: filter 0.2s, opacity 0.2s;
-  opacity: 0.85;
+.wishlist-btn img {
+  width: 28px;
+  height: 28px;
+  opacity: 0.9;
+  transition: transform 0.2s, filter 0.3s;
 }
 
-.product-card .wishlist-btn img.favourited {
+.wishlist-btn img.favourited {
   filter: brightness(0) saturate(100%) invert(34%) sepia(86%) saturate(7492%) hue-rotate(266deg) brightness(98%) contrast(101%);
-  opacity: 1;
 }
 
+/* Heart icon hover effect */
+.wishlist-btn img:hover {
+  filter: drop-shadow(0 0 2px rgb(152, 84, 246)) brightness(0) saturate(100%) invert(34%) sepia(86%) saturate(7492%) hue-rotate(266deg) brightness(98%) contrast(101%);
+  opacity: 1;
+  transition: filter 0.2s, opacity 0.2s;
+}
+
+/* Product Image */
 .product-card-image-wrap {
   width: 100%;
-  height: 340px;
-  background: #f6edff;
-  margin-bottom: 1.1rem;
   overflow: hidden;
-  border-radius: 10px;
+  margin-bottom: 0.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #fff;
 }
 
 .product-card-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
+/* Product Title */
 .product-card-title {
   text-align: center;
-  font-size: 1.08rem;
-  font-weight: 600;
-  color: #22223b;
-  margin-bottom: 0.7rem;
+  font-size: 0.9rem;
+  font-weight: 450;
+  color: #1e293b;
+  margin-bottom: 0.6rem;
   letter-spacing: 0.2px;
 }
 
+/* Size Buttons */
 .product-card-sizes-row {
   display: flex;
   justify-content: center;
   gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 1.1rem;
 }
 
 .product-card-size-btn {
-  padding: 6px 16px;
-  border: 2px solid #bdbdbd;
-  border-radius: 6px;
+  padding: 3px 7px;
+  border: 2px solid #ccc;
   background: #fff;
-  color: #222;
-  font-size: 0.98rem;
-  font-weight: 500;
-  transition: border 0.2s, background 0.2s, color 0.2s;
+  font-size: 0.85rem;
+  color: #333;
+  border-radius: 6px;
   cursor: pointer;
-  outline: none;
+  transition: all 0.2s ease;
   min-width: 36px;
-  min-height: 32px;
 }
 
-.product-card-size-btn.selected,
-.product-card-size-btn:focus {
-  border-color: #9854f6;
-  background: #f6edff;
+.product-card-size-btn.selected {
+  border: 2px solid #9854f6;
   color: #9854f6;
+  background-color: #f6edff;
 }
 
 .product-card-size-btn:disabled {
-  opacity: 0.4;
+  opacity: 0.3;
   cursor: not-allowed;
-  background: #f3f3f3;
-  color: #bdbdbd;
-  border-color: #e5e7eb;
 }
 
+/* Divider */
 .product-card-divider {
-  border-top: 1.5px solid #e5e7eb;
-  margin: 1.1rem 0;
+  border-top: 1px solid #e5e7eb;
+  margin: 1rem 0 0 0;
 }
 
+/* Price Row */
 .product-card-price-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 0.7rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  justify-content: center;
+  font-size: 0.93rem;
+  margin-bottom: 0.5rem;
+  padding: 0 0.4rem;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+.product-card-price-group {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 1;
+  white-space: nowrap; /* Prevent wrapping */
 }
 
 .product-card-price {
-  color: #1e293b;
-  font-weight: bold;
-  font-size: 1.08rem;
+  color: #111827;
+  font-weight: 600;
+  font-size: 0.93rem;
 }
 
 .product-card-original-price {
-  color: #bdbdbd;
+  color: #9ca3af;
   text-decoration: line-through;
-  font-size: 0.98rem;
-  margin-left: 2px;
+  font-weight: 500;
+  font-size: 0.81rem;
 }
 
-.product-card-mrp {
-  color: #bdbdbd;
-  font-size: 0.92rem;
-  margin-left: 2px;
+/* Vertical divider */
+.product-card-vertical-divider {
+  width: 1px;
+  height: 22px;
+  background: #e5e7eb;
+  margin: 0 12px;
+  display: inline-block;
+  vertical-align: middle;
 }
 
+/* Add to Cart Button */
 .product-card-add-btn {
   width: 100%;
-  background: linear-gradient(90deg, #9854f6 0%, #7f3afc 100%);
-  color: #fff;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 0.7rem 0;
-  border: none;
+  font-size: 0.95rem;
+  padding: 0.6rem;
   border-radius: 8px;
-  margin-top: 0.5rem;
-  transition: background 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px rgba(152, 84, 246, 0.07);
+  background: none;
+  border: none;
+  color: #111;         /* Black font by default */
+  font-weight: 500;
   cursor: pointer;
+  transition: background 0.3s, color 0.18s;
 }
 
-.product-card-add-btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  background: #e5e7eb;
-  color: #bdbdbd;
+.product-card-add-btn:hover {
+  color: #9854f6;      /* Purple on hover */
+  background: none;
 }
 
-.product-card-add-btn.added {
-  background: #22c55e;
-  color: #fff;
+/* .product-card-add-btn:disabled {
+  opacity: 1;
+  background: none;
+  color: #9854f6;
+  cursor: pointer;
+} */
+
+/* Select Size button (inherits above styles) */
+.product-card-add-btn.select-size-btn {
+  color: #111;
+  background: none;
+  border: none;
+  font-weight: 500;
+  transition: color 0.18s;
 }
 
-@media (max-width: 600px) {
-  .product-card {
-    max-width: 98vw;
-    padding: 1rem 0.5rem 1rem 0.5rem;
-  }
-  .product-card-image-wrap {
-    height: 180px;
-  }
-  .product-card-title {
-    font-size: 1rem;
-  }
+.product-card-add-btn.select-size-btn:hover {
+  color: #9854f6;
+  background: none;
 }
+
+.product-card-add-btn.view-cart-btn {
+  color: #111;
+  background: none;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s, color 0.18s;
+}
+
+.product-card-add-btn.view-cart-btn:hover {
+  color: #9854f6;
+  background: none;
+}
+

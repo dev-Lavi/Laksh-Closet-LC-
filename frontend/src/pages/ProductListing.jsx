@@ -13,7 +13,7 @@ const ProductListing = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get('https://laksh-closet.onrender.com/api/products');
+        const res = await axios.get(`${import.meta.env.VITE_RENDER_EXTERNAL_URL}/api/products`);
         setProducts(res.data);
       } catch (err) {
         console.error('Failed to fetch products:', err);
