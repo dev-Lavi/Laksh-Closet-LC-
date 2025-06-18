@@ -10,7 +10,7 @@ const ProductListing = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_RENDER_EXTERNAL_URL}/api/products`);
+        const res = await axios.get(`${import.meta.env.VITE_RENDER_EXTERNAL_URL}/api/pproducts`);
         const transformed = res.data.map(p => ({
           ...p,
           id: p._id,
