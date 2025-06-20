@@ -61,6 +61,25 @@ header img[alt="Laksh Closet Logo"] {
   max-height: 70px !important;
 }
 
+/* Wishlist count badge */
+.header-wishlist-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #dc2626; /* Tailwind's red-600 */
+  color: #fff;
+  font-size: 11px;
+  border-radius: 9999px;
+  padding: 1px 6px;
+  font-weight: 600;
+  line-height: 1;
+  min-width: 18px;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(220,38,38,0.12);
+  z-index: 2;
+  pointer-events: none;
+}
+
 /* Sidebar Styling Improvements */
 
 /* Add spacing at the top of sidebar content */

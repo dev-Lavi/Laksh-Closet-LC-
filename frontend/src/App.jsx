@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 
 import { CartProvider } from './context/CartContext';
 
@@ -9,40 +9,40 @@ import Footer from './components/footer';
 import HomePage from './pages/homepage';
 import ProductPage from './pages/productpage';
 import AdminLogin from './pages/AdminLogin';
-import AddProduct from './pages/addproduct'; // ✅ AddProduct page
-import ProductListing from './pages/ProductListing'; // ✅ Actual Products Page
+import AddProduct from './pages/addproduct';
+import ProductListing from './pages/ProductListing';
 
 const About = () => <div><h1>About Us</h1></div>;
 const Contact = () => <div><h1>Contact</h1></div>;
+
+// Shared layout for public routes
+const Layout = () => (
+  <>
+    <Header />
+    <main>
+      <Outlet />
+    </main>
+    <Footer />
+  </>
+);
 
 function App() {
   return (
     <Router>
       <CartProvider>
         <Routes>
-          {/* Admin-only Routes without Header/Footer */}
+          {/* Admin-only Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/add-product" element={<AddProduct />} />
 
-          {/* Public Routes with Header/Footer */}
-          <Route
-            path="*"
-            element={
-              <>
-                <Header />
-                <main>
-                  <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/products" element={<ProductListing />} /> {/* ✅ Updated */}
-                    <Route path="/products/:id" element={<ProductPage />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/contact" element={<Contact />} />
-                  </Routes>
-                </main>
-                <Footer />
-              </>
-            }
-          />
+          {/* Public Routes */}
+          <Route element={<Layout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/products" element={<ProductListing />} />
+            <Route path="/products/:id" element={<ProductPage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+          </Route>
         </Routes>
       </CartProvider>
     </Router>

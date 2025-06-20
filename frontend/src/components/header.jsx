@@ -40,7 +40,7 @@ function Header() {
           <div className="relative">
             <img src={heartIcon} alt="Wishlist" className="w-6 cursor-pointer transition-transform hover:scale-110" />
             {favourites.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[11px] rounded-full px-[6px] py-[1px] font-semibold leading-none">
+              <span className="header-wishlist-badge">
                 {favourites.length}
               </span>
             )}
