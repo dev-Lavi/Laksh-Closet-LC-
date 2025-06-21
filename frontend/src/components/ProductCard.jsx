@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import addtocartheart from '../assets/heart.svg';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
-import './ProductCard.css'; // ✅ make sure this is the correct filename
+import './ProductCard.css';
 
 function ProductCard({ product }) {
   const availableSizes = product.availableSizes || [];
@@ -10,7 +10,7 @@ function ProductCard({ product }) {
   const [addedToCart, setAddedToCart] = useState(false);
 
   const { addToCart, toggleFavourite, favourites } = useCart();
-  const isFavourited = favourites.some(item => item.id === product.id);
+  const isFavourited = favourites.some(item => item._id === product._id);
   const navigate = useNavigate();
 
   const handleSizeSelect = (size) => {
@@ -22,7 +22,7 @@ function ProductCard({ product }) {
 
   const handleAddToCart = () => {
     if (selectedSize) {
-      addToCart({ ...product, selectedSize });
+      addToCart({ ...product, selectedSize, quantity: 1 }); // ✅ quantity added
       setAddedToCart(true);
     }
   };
@@ -49,7 +49,7 @@ function ProductCard({ product }) {
       {/* Product Image */}
       <div className="product-card-image-wrap">
         <img
-          src={product.image}
+          src={product.image || product.gallery?.[0]} // ✅ fallback to gallery
           alt={product.name}
           className="product-card-image"
         />
@@ -90,7 +90,7 @@ function ProductCard({ product }) {
         {!selectedSize ? (
           <button
             className="product-card-add-btn select-size-btn"
-            onClick={() => navigate(`/product/${product.id || product._id}`)}
+            onClick={() => navigate(`/product/${product._id}`)} // ✅ use _id
             type="button"
           >
             Select Size
@@ -98,7 +98,7 @@ function ProductCard({ product }) {
         ) : addedToCart ? (
           <button
             className="product-card-add-btn view-cart-btn"
-            onClick={() => navigate('/cart')}
+            onClick={handleViewCart}
             type="button"
           >
             View Cart

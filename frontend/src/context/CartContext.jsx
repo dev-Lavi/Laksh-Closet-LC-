@@ -6,70 +6,66 @@ export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const [favourites, setFavourites] = useState([]);
 
-  // Calculate total cart count (sum of all quantities)
-  const cartCount = useMemo(() => (
-    cartItems.reduce((total, item) => total + item.quantity, 0)
-  ), [cartItems]);
+  // 🧮 Calculate total items in cart
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
-  // Add item to cart or update quantity if exists (now handles size variations)
+  // 🛒 Add item to cart (checks _id + selectedSize)
   const addToCart = useCallback((item) => {
     setCartItems(prev => {
-      // Check for matching ID AND size
-      const existingItemIndex = prev.findIndex(prevItem => 
-        prevItem.id === item.id && prevItem.selectedSize === item.selectedSize
+      const existingItemIndex = prev.findIndex(prevItem =>
+        prevItem._id === item._id && prevItem.selectedSize === item.selectedSize
       );
-      
+
       if (existingItemIndex !== -1) {
-        // Create new array to avoid mutation
         const newItems = [...prev];
         newItems[existingItemIndex] = {
           ...newItems[existingItemIndex],
-          quantity: newItems[existingItemIndex].quantity + (item.quantity || 1)
+          quantity: newItems[existingItemIndex].quantity + (item.quantity || 1),
         };
         return newItems;
       }
-      // Add new item with default quantity 1 if not specified
+
       return [...prev, { ...item, quantity: item.quantity || 1 }];
     });
   }, []);
 
-  // Remove item from cart (now handles size variations)
+  // ❌ Remove specific item from cart
   const removeFromCart = useCallback((itemId, size) => {
-    setCartItems(prev => prev.filter(item => 
-      !(item.id === itemId && item.selectedSize === size)
-    ));
+    setCartItems(prev =>
+      prev.filter(item =>
+        !(item._id === itemId && item.selectedSize === size)
+      )
+    );
   }, []);
 
-  // Update specific item quantity
+  // 🔁 Update quantity of an item
   const updateQuantity = useCallback((itemId, size, newQuantity) => {
     if (newQuantity < 1) return;
-    setCartItems(prev => 
-      prev.map(item => 
-        (item.id === itemId && item.selectedSize === size)
-          ? { ...item, quantity: newQuantity } 
+    setCartItems(prev =>
+      prev.map(item =>
+        (item._id === itemId && item.selectedSize === size)
+          ? { ...item, quantity: newQuantity }
           : item
       )
     );
   }, []);
 
-  // Clear all items from cart
+  // 🧹 Clear cart
   const clearCart = useCallback(() => {
     setCartItems([]);
   }, []);
 
-  // Toggle favorite status
+  // ❤️ Toggle wishlist
   const toggleFavourite = useCallback((product) => {
     setFavourites(prev => {
-      const isFavorited = prev.some(item => item.id === product.id);
-      if (isFavorited) {
-        return prev.filter(item => item.id !== product.id);
-      } else {
-        return [...prev, product];
-      }
+      const isFavorited = prev.some(item => item._id === product._id);
+      return isFavorited
+        ? prev.filter(item => item._id !== product._id)
+        : [...prev, product];
     });
   }, []);
 
-  // Context value
+  // 📦 Context value
   const value = {
     cartItems,
     cartCount,
@@ -78,7 +74,7 @@ export function CartProvider({ children }) {
     updateQuantity,
     clearCart,
     favourites,
-    toggleFavourite  // Added toggle function
+    toggleFavourite,
   };
 
   return (

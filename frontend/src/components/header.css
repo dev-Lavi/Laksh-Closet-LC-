@@ -39,13 +39,20 @@ header img {
 @media (min-width: 1024px) {
   .search-icon-desktop {
     display: block;
-    width: 24px;
+    width: 26px;
     cursor: pointer;
     transition: transform 0.2s;
+      margin-right: 4px;
   }
   .search-icon-desktop:hover {
     transform: scale(1.1);
   }
+
+  .header-cart-icon,
+.header-wishlist-icon {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
 }
 
 /* Reduce header/nav height */
@@ -64,20 +71,74 @@ header img[alt="Laksh Closet Logo"] {
 /* Wishlist count badge */
 .header-wishlist-badge {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: 19px;
+  right: 1px;
   background: #dc2626; /* Tailwind's red-600 */
   color: #fff;
-  font-size: 11px;
-  border-radius: 9999px;
-  padding: 1px 6px;
-  font-weight: 600;
-  line-height: 1;
-  min-width: 18px;
-  text-align: center;
-  box-shadow: 0 1px 4px rgba(220,38,38,0.12);
+   font-size: 10px;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(229,9,20,0.13);
   z-index: 2;
+  border: 2px solid #fff;
   pointer-events: none;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  transition: background 0.18s;
+}
+
+/* Header cart badge */
+.header-cart-badge {
+  position: absolute;
+  top: 19px;
+  right: 18px;
+  background: #e50914; /* Netflix red, very visible */
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(229,9,20,0.13);
+  z-index: 2;
+  border: 2px solid #fff;
+  pointer-events: none;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  transition: background 0.18s;
+}
+
+/* Cart and Wishlist Icon Styling */
+.header-cart-icon,
+.header-wishlist-icon {
+  width: 38px;
+  height: 38px;
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.18s, filter 0.18s;
+  filter: grayscale(0%);
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.header-cart-icon:hover,
+.header-wishlist-icon:hover {
+  transform: scale(1.13) rotate(-6deg);
+  filter: drop-shadow(0 2px 8px rgba(229,9,20,0.13));
+}
+
+/* For proper badge overlap, wrap icon in a relative container */
+.header-icon-container {
+  position: relative;
+  display: inline-block;
 }
 
 /* Sidebar Styling Improvements */
@@ -121,5 +182,12 @@ header img[alt="Laksh Closet Logo"] {
 /* Login/Register spacing */
 .sidebar .auth-links {
   margin-bottom: 24px;
+}
+
+@media (max-width: 390px) {
+  header img[alt="Laksh Closet Logo"] {
+    height: 90px !important;
+    max-width: 120px;
+  }
 }
 

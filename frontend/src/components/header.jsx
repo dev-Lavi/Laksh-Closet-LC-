@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useCart } from '../context/CartContext'; // ✅ only once
+import { useCart } from '../context/CartContext';
 import '../fonts.css';
 import './header.css';
 
@@ -15,7 +15,7 @@ import youtubeIcon from '../assets/youtube.svg';
 
 function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { cartItems, favourites } = useCart();
+  const { cartCount, favourites } = useCart(); // use cartCount instead of cartItems
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -24,7 +24,7 @@ function Header() {
       <header className="flex justify-between items-center px-4 sm:px-6 md:px-8 py-4 bg-white border-b-8 border-gray-300 relative min-h-[100px] font-karla">
         <div className="flex items-center gap-4 sm:gap-6 flex-1">
           <div className="hamburger-container flex items-center gap-3">
-            <img src={hamburgerIcon} alt="Menu" className="w-7 cursor-pointer transition-transform hover:scale-110" onClick={toggleSidebar} />
+            <img src={hamburgerIcon} alt="Menu" className="w-9 cursor-pointer transition-transform hover:scale-110" onClick={toggleSidebar} />
             <img src={searchIcon} alt="Search" className="search-icon-mobile" />
           </div>
         </div>
@@ -33,12 +33,14 @@ function Header() {
           <img src={logo} alt="Laksh Closet Logo" className="h-18" />
         </div>
 
-        <div className="flex items-center gap-4 sm:gap-6 flex-1 justify-end relative">
+        <div className="flex items-center gap-0 sm:gap-1 flex-1 justify-end relative">
           <img src={searchIcon} alt="Search" className="search-icon-desktop" />
 
-          {/* Wishlist */}
-          <div className="relative">
-            <img src={heartIcon} alt="Wishlist" className="w-6 cursor-pointer transition-transform hover:scale-110" />
+          {/* Wishlist and Cart Icons */}
+          <div className="header-icon-container relative">
+            <Link to="/wishlist" className="flex items-center">
+              <img src={heartIcon} alt="Wishlist" className="header-wishlist-icon w-6 cursor-pointer transition-transform hover:scale-110" />
+            </Link>
             {favourites.length > 0 && (
               <span className="header-wishlist-badge">
                 {favourites.length}
@@ -46,12 +48,13 @@ function Header() {
             )}
           </div>
 
-          {/* Cart */}
-          <div className="relative cart-container">
-            <img src={cartIcon} alt="Cart" className="w-6 cursor-pointer transition-transform hover:scale-110" />
-            {cartItems.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-black text-white text-[11px] rounded-full px-[6px] py-[1px] font-semibold leading-none">
-                {cartItems.length}
+          <div className="header-icon-container relative">
+            <div className="flex items-center cart-container">
+              <img src={cartIcon} alt="Cart" className="header-cart-icon w-6 cursor-pointer transition-transform hover:scale-110" />
+            </div>
+            {cartCount > 0 && (
+              <span className="header-cart-badge">
+                {cartCount}
               </span>
             )}
           </div>
@@ -64,27 +67,13 @@ function Header() {
         <h3 className="text-lg font-kanit mb-6 uppercase tracking-wide text-gray-800">Categories</h3>
 
         <ul className="space-y-4 text-gray-700 text-base">
-          <li>
-            <Link to="/products" className="cursor-pointer hover:text-gray-900 block">Products</Link>
-          </li>
-          <li>
-            <Link to="/products/unisex" className="cursor-pointer hover:text-gray-900 block">Unisex</Link>
-          </li>
-          <li>
-            <Link to="/products/baggy" className="cursor-pointer hover:text-gray-900 block">Baggy</Link>
-          </li>
-          <li>
-            <Link to="/products/straight-fit" className="cursor-pointer hover:text-gray-900 block">Straight Fit</Link>
-          </li>
-          <li>
-            <Link to="/products/bootcut" className="cursor-pointer hover:text-gray-900 block">Bootcut</Link>
-          </li>
-          <li>
-            <Link to="/products/ripped-jeans" className="cursor-pointer hover:text-gray-900 block">Ripped jeans</Link>
-          </li>
-          <li>
-            <Link to="/products/mom-jeans" className="cursor-pointer hover:text-gray-900 block">Mom Jeans</Link>
-          </li>
+          <li><Link to="/products" className="cursor-pointer hover:text-gray-900 block">Products</Link></li>
+          <li><Link to="/products/unisex" className="cursor-pointer hover:text-gray-900 block">Unisex</Link></li>
+          <li><Link to="/products/baggy" className="cursor-pointer hover:text-gray-900 block">Baggy</Link></li>
+          <li><Link to="/products/straight-fit" className="cursor-pointer hover:text-gray-900 block">Straight Fit</Link></li>
+          <li><Link to="/products/bootcut" className="cursor-pointer hover:text-gray-900 block">Bootcut</Link></li>
+          <li><Link to="/products/ripped-jeans" className="cursor-pointer hover:text-gray-900 block">Ripped Jeans</Link></li>
+          <li><Link to="/products/mom-jeans" className="cursor-pointer hover:text-gray-900 block">Mom Jeans</Link></li>
         </ul>
 
         <hr className="my-6 border-gray-300" />
