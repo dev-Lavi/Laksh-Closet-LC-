@@ -7,6 +7,7 @@ import Header from './components/header';
 import Footer from './components/footer';
 
 import HomePage from './pages/homepage';
+import CartPage from './pages/CartPage';
 import ProductPage from './pages/productpage';
 import AdminLogin from './pages/AdminLogin';
 import AddProduct from './pages/addproduct';
@@ -42,6 +43,7 @@ function App() {
             <Route path="/products/:id" element={<ProductPage />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/cart" element={<CartPage />} />
           </Route>
         </Routes>
       </CartProvider>

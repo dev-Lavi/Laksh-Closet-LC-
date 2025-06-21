@@ -48,15 +48,15 @@ function Header() {
             )}
           </div>
 
-          <div className="header-icon-container relative">
-            <div className="flex items-center cart-container">
-              <img src={cartIcon} alt="Cart" className="header-cart-icon w-6 cursor-pointer transition-transform hover:scale-110" />
-            </div>
-            {cartCount > 0 && (
-              <span className="header-cart-badge">
-                {cartCount}
-              </span>
-            )}
+          <div className="header-icon-container">
+            <Link to="/cart">
+              <img src={cartIcon} alt="Cart" className="header-cart-icon" />
+              {cartCount > 0 && (
+                <span className="header-cart-badge">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
           </div>
         </div>
       </header>
