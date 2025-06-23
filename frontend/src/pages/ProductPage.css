@@ -311,6 +311,25 @@ details[open] .details-summary {
   margin-bottom: 24px;
 }
 
+/* Desktop: margin for gallery images row */
+.gallery-images-row,
+.md\:flex.gallery-images-row {
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+/* Mobile: center the single image and add margin */
+@media (max-width: 767px) {
+  .md\:hidden.gallery-images-row,
+  .gallery-images-row {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center;
+    margin-top: 28px;
+    margin-bottom: 28px;
+  }
+}
+
 /* Related Products Card (shared for mobile & desktop) */
 .related-product-card {
   border: 1px solid #222;
@@ -519,4 +538,13 @@ details[open] .details-summary {
   .product-details-right .flex.items-center.gap-2.text-purple-600 {
     font-size: 1.1rem;
   }
+}
+
+@media (max-width: 767px) {
+  .md\:flex { display: none !important; }
+  .md\:hidden { display: block !important; }
+}
+@media (min-width: 768px) {
+  .md\:flex { display: flex !important; }
+  .md\:hidden { display: none !important; }
 }

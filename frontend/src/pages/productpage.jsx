@@ -55,7 +55,23 @@ const ProductPage = () => {
         <div className="max-w-6xl w-full">
 {/* Gallery Section */}
 <div className="flex flex-col items-center mb-12 px-4">
-  <div className="relative w-full flex justify-center py-4">
+  {/* Desktop: Show all images side by side */}
+  <div className="hidden md:flex gap-4 gallery-images-row">
+    {product.gallery.map((src, i) => (
+      <img
+        key={i}
+        src={src}
+        alt={product.name}
+        className={`w-[220px] h-[320px] object-cover rounded border-2 shadow-lg cursor-pointer transition-all duration-200 ${
+          galleryIndex === i ? 'border-purple-600' : 'border-gray-300 opacity-80'
+        }`}
+        onClick={() => setGalleryIndex(i)}
+      />
+    ))}
+  </div>
+
+  {/* Mobile: Show only one image */}
+  <div className="relative w-full flex justify-center py-4 md:hidden gallery-images-row">
     <img
       src={product.gallery[galleryIndex]}
       alt={product.name}
@@ -79,22 +95,7 @@ const ProductPage = () => {
     </button>
   </div>
 
-  {/* Dot Indicators */}
-  <div className="flex justify-center mt-4 gap-2">
-    {product.gallery.map((_, i) => (
-      <button
-        key={i}
-        className={`w-3 h-3 rounded-full border transition-all duration-200 ${
-          galleryIndex === i
-            ? 'bg-purple-600 border-purple-600'
-            : 'bg-gray-300 border-gray-300'
-        }`}
-        onClick={() => setGalleryIndex(i)}
-      />
-    ))}
-  </div>
-
-  {/* Thumbnails */}
+  {/* Thumbnails (always visible) */}
   <div className="flex justify-center gap-2 mt-4">
     {product.gallery.map((src, i) => (
       <img
