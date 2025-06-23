@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // <-- import useNavigate
 import { ChevronDown, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import './ProductPage.css';
@@ -10,9 +10,11 @@ const ProductPage = () => {
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('');
+  const [addedToCart, setAddedToCart] = useState(false); // <-- new state
   const [desktopStart, setDesktopStart] = useState(0);
 
   const { setCartItems } = useCart();
+  const navigate = useNavigate(); // <-- initialize
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -21,7 +23,7 @@ const ProductPage = () => {
         const data = await res.json();
         setProduct(data);
         if (data?.sizes?.length > 0) {
-          setSelectedSize(data.sizes[0]); // Set the first size by default
+          setSelectedSize(data.sizes[0]);
         }
       } catch (error) {
         console.error('Failed to fetch product:', error);
@@ -34,6 +36,11 @@ const ProductPage = () => {
   const handleAddToCart = () => {
     if (!selectedSize) return;
     setCartItems(prev => [...prev, { ...product, quantity, selectedSize }]);
+    setAddedToCart(true); // <-- set state
+  };
+
+  const handleViewCart = () => {
+    navigate('/cart');
   };
 
   const handleGalleryNav = (direction) => {
@@ -62,8 +69,8 @@ const ProductPage = () => {
         key={i}
         src={src}
         alt={product.name}
-        className={`w-[220px] h-[320px] object-cover rounded border-2 shadow-lg cursor-pointer transition-all duration-200 ${
-          galleryIndex === i ? 'border-purple-600' : 'border-gray-300 opacity-80'
+        className={`w-[330px] h-[480px] object-cover rounded border-2 shadow-lg cursor-pointer transition-all duration-200 ${
+          galleryIndex === i ? 'border-purple-600' : 'border-gray-300 opacity-100'
         }`}
         onClick={() => setGalleryIndex(i)}
       />
@@ -149,34 +156,61 @@ const ProductPage = () => {
                   />
                   <button onClick={() => setQuantity(q => q + 1)}>+</button>
                 </div>
-                <button
-                  onClick={handleAddToCart}
-                  className="product-add-cart-btn"
-                >
-                  Add to cart
-                </button>
+                {!addedToCart ? (
+                  <button
+                    onClick={handleAddToCart}
+                    className="product-add-cart-btn"
+                  >
+                    Add to cart
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleViewCart}
+                    className="product-add-cart-btn"
+                  >
+                    View Cart
+                  </button>
+                )}
               </div>
             </div>
 
             <div className="product-details-right">
               <h2 className="text-3xl font-bold mb-2 text-center">{product.name}</h2>
-              <div className="text-center text-sm mb-4 text-gray-500">
-                {product.description}
-              </div>
               <button className="border border-gray-400 px-6 py-2 rounded-md flex items-center gap-2 text-gray-700 hover:text-black transition mb-6">
                 <Heart className="w-5 h-5" /> Wishlist
               </button>
-              <div className="space-y-2 w-full mt-6 details-list">
-                {['SHIPPING AND RETURN', 'DESCRIPTION', 'ADDITIONAL INFORMATION'].map((section, i) => (
-                  <details key={i} className="details-row">
-                    <summary className="details-summary">
-                      {section}
-                      <ChevronDown className="w-4 h-4" />
-                    </summary>
-                    <p className="details-content">Details for {section.toLowerCase()}.</p>
-                  </details>
-                ))}
-              </div>
+<div className="space-y-2 w-full mt-6 details-list">
+  <details className="details-row">
+    <summary className="details-summary">
+      SHIPPING AND RETURN
+      <ChevronDown className="w-4 h-4" />
+    </summary>
+    <p className="details-content">
+      Free shipping on all orders. Returns accepted within 7 days of delivery.
+    </p>
+  </details>
+
+  <details className="details-row">
+    <summary className="details-summary">
+      DESCRIPTION
+      <ChevronDown className="w-4 h-4" />
+    </summary>
+    <p className="details-content">
+      {product.description || 'No description available.'}
+    </p>
+  </details>
+
+  <details className="details-row">
+    <summary className="details-summary">
+      ADDITIONAL INFORMATION
+      <ChevronDown className="w-4 h-4" />
+    </summary>
+    <p className="details-content">
+      Material: 100% Cotton. Wash cold. Do not bleach. Made in India.
+    </p>
+  </details>
+</div>
+
             </div>
           </div>
 
