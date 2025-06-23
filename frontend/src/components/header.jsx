@@ -68,7 +68,13 @@ function Header() {
         {/* Social Icons */}
         <div className="sidebar-social-icons flex justify-start gap-4 mb-6">
           <img src={youtubeIcon} alt="YouTube" className="w-5 cursor-pointer hover:scale-110 transition-transform" />
-          <img src={instagramIcon} alt="Instagram" className="w-5 cursor-pointer hover:scale-110 transition-transform" />
+          <a
+    href="https://www.instagram.com/lakshcloset/?igsh=ZHZiYWJoeXB6c3Vi#"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img src={instagramIcon} alt="Instagram" className="w-5 cursor-pointer hover:scale-110 transition-transform" />
+  </a>
         </div>
 
         <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-600 border-b pb-1 mb-4">Categories</h3>
