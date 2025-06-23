@@ -5,6 +5,8 @@ import {
   updateProduct
 } from '../controllers/productController.js';
 
+import mongoose from 'mongoose';
+
 import Product from '../models/Product.js';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
 
@@ -41,10 +43,22 @@ router.get('/category/:category', async (req, res) => {
 // @route   GET /api/products/:id
 router.get('/:id', async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: 'Product not found' });
+    const { id } = req.params;
+    console.log('Requested ID:', id);
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'Invalid Product ID' });
+    }
+
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
     res.json(product);
   } catch (err) {
+    console.error('Error fetching product:', err); // log actual error
     res.status(500).json({ message: 'Server Error' });
   }
 });

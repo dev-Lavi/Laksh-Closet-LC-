@@ -90,7 +90,7 @@ function ProductCard({ product }) {
         {!selectedSize ? (
           <button
             className="product-card-add-btn select-size-btn"
-            onClick={() => navigate(`/product/${product._id}`)} // ✅ use _id
+            onClick={() => navigate(`/products/${product._id}`)} // ✅ use _id
             type="button"
           >
             Select Size
