@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import '../fonts.css';
@@ -12,10 +12,11 @@ import heartIcon from '../assets/heart.svg';
 import hamburgerIcon from '../assets/hamburger.svg';
 import instagramIcon from '../assets/instagram.svg';
 import youtubeIcon from '../assets/youtube.svg';
+import profileIcon from '../assets/profile.svg';
 
 function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { cartCount, favourites } = useCart(); // use cartCount instead of cartItems
+  const { cartCount, favourites } = useCart();
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -36,7 +37,6 @@ function Header() {
         <div className="flex items-center gap-0 sm:gap-1 flex-1 justify-end relative">
           <img src={searchIcon} alt="Search" className="search-icon-desktop" />
 
-          {/* Wishlist and Cart Icons */}
           <div className="header-icon-container relative">
             <Link to="/wishlist" className="flex items-center">
               <img src={heartIcon} alt="Wishlist" className="header-wishlist-icon w-6 cursor-pointer transition-transform hover:scale-110" />
@@ -62,32 +62,38 @@ function Header() {
       </header>
 
       {/* Sidebar */}
-      <div className={`fixed top-0 left-0 h-screen w-[250px] bg-gray-100 shadow-lg px-6 py-8 transition-all z-[1000] font-karla ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <button className="absolute top-4 right-4 text-2xl font-bold" onClick={toggleSidebar}>×</button>
-        <h3 className="text-lg font-kanit mb-6 uppercase tracking-wide text-gray-800">Categories</h3>
+      <div className={`header-sidebar ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <button className="sidebar-close-btn" onClick={toggleSidebar}>×</button>
+        
+        {/* Social Icons */}
+        <div className="sidebar-social-icons flex justify-start gap-4 mb-6">
+          <img src={youtubeIcon} alt="YouTube" className="w-5 cursor-pointer hover:scale-110 transition-transform" />
+          <img src={instagramIcon} alt="Instagram" className="w-5 cursor-pointer hover:scale-110 transition-transform" />
+        </div>
 
-        <ul className="space-y-4 text-gray-700 text-base">
-          <li><Link to="/products" className="cursor-pointer hover:text-gray-900 block">Products</Link></li>
-          <li><Link to="/products/unisex" className="cursor-pointer hover:text-gray-900 block">Unisex</Link></li>
-          <li><Link to="/products/baggy" className="cursor-pointer hover:text-gray-900 block">Baggy</Link></li>
-          <li><Link to="/products/straight-fit" className="cursor-pointer hover:text-gray-900 block">Straight Fit</Link></li>
-          <li><Link to="/products/bootcut" className="cursor-pointer hover:text-gray-900 block">Bootcut</Link></li>
-          <li><Link to="/products/ripped-jeans" className="cursor-pointer hover:text-gray-900 block">Ripped Jeans</Link></li>
-          <li><Link to="/products/mom-jeans" className="cursor-pointer hover:text-gray-900 block">Mom Jeans</Link></li>
+        <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-600 border-b pb-1 mb-4">Categories</h3>
+
+        <ul className="space-y-5 text-[14px] text-black">
+          <li><Link to="/products" className="block hover:font-semibold">All Products</Link></li>
+          <li><Link to="/products/unisex" className="block hover:font-semibold">Unisex</Link></li>
+          <li><Link to="/products/baggy" className="block hover:font-semibold">Baggy</Link></li>
+          <li><Link to="/products/straight-fit" className="block hover:font-semibold">Straight Fit</Link></li>
+          <li><Link to="/products/bootcut" className="block hover:font-semibold">Bootcut</Link></li>
+          <li><Link to="/products/ripped-jeans" className="block hover:font-semibold">Ripped Jeans</Link></li>
         </ul>
 
         <hr className="my-6 border-gray-300" />
 
-        <div className="space-y-2 text-base text-blue-700">
-          <Link to="/login" className="block hover:underline">Login</Link>
-          <Link to="/register" className="block hover:underline">Register</Link>
-        </div>
-
-        <hr className="my-6 border-gray-300" />
-
-        <div className="sidebar-social-icons flex gap-4">
-          <img src={instagramIcon} alt="Instagram" className="w-6 cursor-pointer hover:scale-110 transition-transform" />
-          <img src={youtubeIcon} alt="YouTube" className="w-6 cursor-pointer hover:scale-110 transition-transform" />
+        <Link to="/profile" className="sidebar-profile-link flex items-center gap-2 text-black hover:font-semibold">
+          <img src={profileIcon} alt="Profile" className="w-5" />
+          Profile
+        </Link>
+        
+        <div className="sidebar-link-group space-y-4 text-[14px]">
+          <Link to="/login" className="block text-black hover:font-semibold">Login</Link>
+          <Link to="/register" className="block text-black hover:font-semibold">Register</Link>
+          <Link to="/track-order" className="block text-black hover:font-semibold">Track Order</Link>
+          <Link to="/help" className="block text-black hover:font-semibold">Need Help?</Link>
         </div>
       </div>
     </>

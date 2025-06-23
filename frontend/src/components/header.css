@@ -184,6 +184,133 @@ header img[alt="Laksh Closet Logo"] {
   margin-bottom: 24px;
 }
 
+/* Sidebar styles */
+.header-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 270px;
+  background: #f3f3f3; /* Soft light gray */
+  box-shadow: 2px 0 16px rgba(0,0,0,0.08);
+  z-index: 1000;
+  padding: 32px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+  overflow-y: auto;
+}
+
+.header-sidebar .sidebar-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: #222;
+  cursor: pointer;
+  z-index: 1010;
+}
+
+.header-sidebar .sidebar-social-icons {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 28px;
+  margin-left: 18px;
+}
+
+.header-sidebar .sidebar-social-icons img {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: transform 0.18s;
+}
+
+.header-sidebar .sidebar-social-icons img:hover {
+  transform: scale(1.18);
+}
+
+.header-sidebar h3 {
+  font-size: 0.98rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #444;
+  border-bottom: 1.5px solid #d1d5db;
+  padding-bottom: 8px;
+  margin: 0 0 18px 18px;
+}
+
+.header-sidebar ul {
+  list-style: none;
+  padding: 0 0 0 18px;
+  margin: 0;
+}
+
+.header-sidebar ul li {
+  margin-bottom: 18px;
+}
+
+.header-sidebar ul li a {
+  color: #222;
+  font-size: 1.08rem;
+  text-decoration: none;
+  transition: color 0.18s, font-weight 0.18s;
+  letter-spacing: 0.01em;
+}
+
+.header-sidebar ul li a:hover,
+.header-sidebar ul li a.active {
+  color: #5e3fde;
+  font-weight: 600;
+}
+
+.header-sidebar hr {
+  border: none;
+  border-top: 1.5px solid #d1d5db;
+  margin: 24px 0 18px 0;
+}
+
+.header-sidebar .sidebar-profile-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #5e3fde;
+  font-weight: 600;
+  margin-left: 18px;
+  margin-bottom: 12px;
+  font-size: 1.08rem;
+  text-decoration: none;
+}
+
+.header-sidebar .sidebar-profile-link img {
+  width: 20px;
+  height: 20px;
+}
+
+.header-sidebar .sidebar-link-group {
+  margin-left: 18px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (max-width: 400px) {
+  .header-sidebar {
+    width: 90vw;
+    min-width: 0;
+    padding-left: 0;
+  }
+  .header-sidebar h3,
+  .header-sidebar ul,
+  .header-sidebar .sidebar-profile-link,
+  .header-sidebar .sidebar-link-group {
+    margin-left: 10px;
+  }
+}
+
 @media (max-width: 390px) {
   header img[alt="Laksh Closet Logo"] {
     height: 90px !important;
