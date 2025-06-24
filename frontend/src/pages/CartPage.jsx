@@ -25,7 +25,11 @@ function CartPage() {
           </div>
           {cartItems.map((item, index) => (
             <div className="cart-item" key={index}>
-              <img src={item.image} alt={item.name} className="cart-item-image" />
+              <img
+  src={item.image || item.gallery?.[0] || '/fallback-image.jpg'}
+  alt={item.name}
+  className="cart-item-image"
+/>
               <div className="cart-item-details">
                 <div className="cart-product-details">
                   <span className="cart-product-title">

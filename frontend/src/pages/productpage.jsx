@@ -13,7 +13,10 @@ const ProductPage = () => {
   const [addedToCart, setAddedToCart] = useState(false); // <-- new state
   const [desktopStart, setDesktopStart] = useState(0);
 
-  const { setCartItems } = useCart();
+  const { addToCart } = useCart(); 
+  const { toggleFavourite, favourites } = useCart();
+  const isFavourited = favourites.some(item => item._id === product._id);
+
   const navigate = useNavigate(); // <-- initialize
 
   useEffect(() => {
@@ -33,11 +36,12 @@ const ProductPage = () => {
     fetchProduct();
   }, [id]);
 
-  const handleAddToCart = () => {
-    if (!selectedSize) return;
-    setCartItems(prev => [...prev, { ...product, quantity, selectedSize }]);
-    setAddedToCart(true); // <-- set state
-  };
+const handleAddToCart = () => {
+  if (!selectedSize) return;
+  addToCart({ ...product, quantity, selectedSize }); // ✅ Correct usage
+  setAddedToCart(true);
+};
+
 
   const handleViewCart = () => {
     navigate('/cart');
@@ -176,9 +180,16 @@ const ProductPage = () => {
 
             <div className="product-details-right">
               <h2 className="text-3xl font-bold mb-2 text-center">{product.name}</h2>
-              <button className="border border-gray-400 px-6 py-2 rounded-md flex items-center gap-2 text-gray-700 hover:text-black transition mb-6">
-                <Heart className="w-5 h-5" /> Wishlist
-              </button>
+<button
+  onClick={() => toggleFavourite(product)}
+  className={`border px-6 py-2 rounded-md flex items-center gap-2 transition mb-6 ${
+    isFavourited ? 'text-red-500 border-red-400' : 'text-gray-700 hover:text-black'
+  }`}
+>
+  <Heart className="w-5 h-5" />
+  {isFavourited ? 'Wishlisted' : 'Wishlist'}
+</button>
+
 <div className="space-y-2 w-full mt-6 details-list">
   <details className="details-row">
     <summary className="details-summary">

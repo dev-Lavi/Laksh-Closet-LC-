@@ -80,6 +80,7 @@ function Header() {
         <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-600 border-b pb-1 mb-4">Categories</h3>
 
         <ul className="space-y-5 text-[14px] text-black">
+          <li><Link to="/" className="block hover:font-semibold">Home</Link></li>
           <li><Link to="/products" className="block hover:font-semibold">All Products</Link></li>
           <li><Link to="/products" className="block hover:font-semibold">Unisex</Link></li>
           <li><Link to="/products" className="block hover:font-semibold">Baggy</Link></li>

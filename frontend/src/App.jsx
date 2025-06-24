@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; 
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 
 import { CartProvider } from './context/CartContext';
@@ -29,8 +29,8 @@ const Layout = () => (
 
 function App() {
   return (
-    <Router>
-      <CartProvider>
+    <CartProvider>
+      <Router>
         <Routes>
           {/* Admin-only Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -46,8 +46,8 @@ function App() {
             <Route path="/cart" element={<CartPage />} />
           </Route>
         </Routes>
-      </CartProvider>
-    </Router>
+      </Router>
+    </CartProvider>
   );
 }
 
