@@ -81,11 +81,11 @@ function Header() {
 
         <ul className="space-y-5 text-[14px] text-black">
           <li><Link to="/products" className="block hover:font-semibold">All Products</Link></li>
-          <li><Link to="/products/unisex" className="block hover:font-semibold">Unisex</Link></li>
-          <li><Link to="/products/baggy" className="block hover:font-semibold">Baggy</Link></li>
-          <li><Link to="/products/straight-fit" className="block hover:font-semibold">Straight Fit</Link></li>
-          <li><Link to="/products/bootcut" className="block hover:font-semibold">Bootcut</Link></li>
-          <li><Link to="/products/ripped-jeans" className="block hover:font-semibold">Ripped Jeans</Link></li>
+          <li><Link to="/products" className="block hover:font-semibold">Unisex</Link></li>
+          <li><Link to="/products" className="block hover:font-semibold">Baggy</Link></li>
+          <li><Link to="/products" className="block hover:font-semibold">Straight Fit</Link></li>
+          <li><Link to="/products" className="block hover:font-semibold">Bootcut</Link></li>
+          <li><Link to="/products" className="block hover:font-semibold">Ripped Jeans</Link></li>
         </ul>
 
         <hr className="my-6 border-gray-300" />
