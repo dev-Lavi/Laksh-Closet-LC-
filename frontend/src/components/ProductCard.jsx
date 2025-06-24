@@ -47,7 +47,11 @@ function ProductCard({ product }) {
       </button>
 
       {/* Product Image */}
-      <div className="product-card-image-wrap">
+      <div
+        className="product-card-image-wrap"
+        style={{ cursor: 'pointer' }}
+        onClick={() => navigate(`/products/${product._id}`)}
+      >
         <img
           src={product.image || product.gallery?.[0]} // ✅ fallback to gallery
           alt={product.name}
