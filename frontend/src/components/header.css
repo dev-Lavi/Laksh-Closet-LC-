@@ -55,6 +55,26 @@ header img {
 }
 }
 
+/* Hide on small screens, show on >=sm */
+.search-icon-desktop {
+  display: none;
+}
+@media (min-width: 640px) {
+  .search-icon-desktop {
+    display: inline;
+  }
+}
+
+/* Show only on small screens */
+.sidebar-search-block {
+  display: block;
+}
+@media (min-width: 640px) {
+  .sidebar-search-block {
+    display: none;
+  }
+}
+
 /* Reduce header/nav height */
 header {
   padding-top: 1.2rem !important;   /* ~py-3 */
@@ -190,7 +210,7 @@ header img[alt="Laksh Closet Logo"] {
   top: 0;
   left: 0;
   height: 100vh;
-  width: 270px;
+  width: 300px;
   background: #f3f3f3; /* Soft light gray */
   box-shadow: 2px 0 16px rgba(0,0,0,0.08);
   z-index: 1000;
@@ -203,9 +223,9 @@ header img[alt="Laksh Closet Logo"] {
 
 .header-sidebar .sidebar-close-btn {
   position: absolute;
-  top: 18px;
-  right: 18px;
-  font-size: 2rem;
+  top: -2px;
+  right: 12px;
+  font-size: 3rem;
   background: none;
   border: none;
   color: #222;
@@ -316,5 +336,18 @@ header img[alt="Laksh Closet Logo"] {
     height: 90px !important;
     max-width: 120px;
   }
+}
+
+.header-search-form {
+  margin-left: 12px;
+}
+.header-search-input {
+  padding: 6px 12px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  outline: none;
+  min-width: 180px;
 }
 

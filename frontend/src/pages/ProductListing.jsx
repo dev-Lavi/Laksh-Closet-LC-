@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 import './ProductListing.css';
@@ -6,6 +7,10 @@ import './ProductListing.css';
 const ProductListing = () => {
   const [products, setProducts] = useState([]);
   const [sort, setSort] = useState('recommended');
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchTerm = queryParams.get('search')?.toLowerCase() || '';
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -25,12 +30,20 @@ const ProductListing = () => {
     fetchProducts();
   }, []);
 
-  // Sort products based on selected option
-  const sortedProducts = [...products].sort((a, b) => {
-    if (sort === 'low') return a.price - b.price;
-    if (sort === 'high') return b.price - a.price;
-    return 0; // recommended
-  });
+  // Sort products
+  const sortedProducts = useMemo(() => {
+    const sorted = [...products];
+    if (sort === 'low') return sorted.sort((a, b) => a.price - b.price);
+    if (sort === 'high') return sorted.sort((a, b) => b.price - a.price);
+    return sorted;
+  }, [products, sort]);
+
+  // Filter by search term
+  const filteredProducts = useMemo(() => {
+    return sortedProducts.filter(p =>
+      p.name.toLowerCase().includes(searchTerm)
+    );
+  }, [sortedProducts, searchTerm]);
 
   return (
     <div className="product-listing-root">
@@ -48,9 +61,15 @@ const ProductListing = () => {
       </div>
 
       <div className="product-listing-grid">
-        {sortedProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))
+        ) : (
+          <p className="no-results-msg">
+            No products found for "{searchTerm}"
+          </p>
+        )}
       </div>
     </div>
   );

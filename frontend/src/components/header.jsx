@@ -1,5 +1,5 @@
 import React, { useState } from 'react'; 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // <-- add useNavigate
 import { useCart } from '../context/CartContext';
 import '../fonts.css';
 import './header.css';
@@ -17,8 +17,22 @@ import profileIcon from '../assets/profile.svg';
 function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { cartCount, favourites } = useCart();
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate(); // <-- add this
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  const handleSearchIconClick = () => setShowSearch((prev) => !prev);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+      setShowSearch(false);
+      setSearchQuery('');
+    }
+  };
 
   return (
     <>
@@ -26,7 +40,6 @@ function Header() {
         <div className="flex items-center gap-4 sm:gap-6 flex-1">
           <div className="hamburger-container flex items-center gap-3">
             <img src={hamburgerIcon} alt="Menu" className="w-9 cursor-pointer transition-transform hover:scale-110" onClick={toggleSidebar} />
-            <img src={searchIcon} alt="Search" className="search-icon-mobile" />
           </div>
         </div>
 
@@ -35,7 +48,26 @@ function Header() {
         </div>
 
         <div className="flex items-center gap-0 sm:gap-1 flex-1 justify-end relative">
-          <img src={searchIcon} alt="Search" className="search-icon-desktop" />
+          <img
+  src={searchIcon}
+  alt="Search"
+  className="search-icon-desktop hidden sm:inline cursor-pointer"
+  onClick={handleSearchIconClick}
+/>
+
+          {/* Search Input */}
+          {showSearch && (
+            <form onSubmit={handleSearchSubmit} className="header-search-form">
+              <input
+                type="text"
+                className="header-search-input"
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                autoFocus
+              />
+            </form>
+          )}
 
           <div className="header-icon-container relative">
             <Link to="/wishlist" className="flex items-center">
@@ -65,17 +97,20 @@ function Header() {
       <div className={`header-sidebar ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <button className="sidebar-close-btn" onClick={toggleSidebar}>×</button>
         
-        {/* Social Icons */}
-        <div className="sidebar-social-icons flex justify-start gap-4 mb-6">
-          <img src={youtubeIcon} alt="YouTube" className="w-5 cursor-pointer hover:scale-110 transition-transform" />
-          <a
-    href="https://www.instagram.com/lakshcloset/?igsh=ZHZiYWJoeXB6c3Vi#"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <img src={instagramIcon} alt="Instagram" className="w-5 cursor-pointer hover:scale-110 transition-transform" />
-  </a>
-        </div>
+        {/* Search for mobile */}
+        <div className="sidebar-search-block sm:hidden mb-6 px-4">
+    <form onSubmit={handleSearchSubmit} className="header-search-form">
+      <div className="flex items-center gap-2">
+        <input
+          type="text"
+          className="header-search-input"
+          placeholder="Search products..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+    </form>
+  </div>
 
         <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-600 border-b pb-1 mb-4">Categories</h3>
 
