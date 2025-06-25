@@ -23,11 +23,11 @@ function AdminLogin() {
 
     try {
       setLoading(true);
-      const res = await fetch('https://laksh-closet.onrender.com/api/users/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
+const res = await fetch(`${import.meta.env.VITE_RENDER_EXTERNAL_URL}/api/users/login`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email, password })
+});
 
       const data = await res.json();
 
