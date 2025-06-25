@@ -15,8 +15,25 @@ function HomePage() {
   const { cartItems, setCartItems, favourites, toggleFavourite } = useCart();
   const [allProducts, setAllProducts] = useState([]);
 
-  const handleAddToCart = (product) => {
-    setCartItems(prev => [...prev, product]);
+  // Updated to handle size selection
+  const handleAddToCart = (product, selectedSize) => {
+    // Find the selected size object
+    const sizeObj = product.sizes.find(size => size.size === selectedSize);
+    
+    if (!sizeObj || sizeObj.stock <= 0) {
+      console.log("Selected size is out of stock");
+      return;
+    }
+
+    // Create cart item with size info
+    const cartItem = {
+      ...product,
+      selectedSize,
+      sizeId: sizeObj._id,
+      stock: sizeObj.stock
+    };
+
+    setCartItems(prev => [...prev, cartItem]);
   };
 
   // Fetch products from API
@@ -29,7 +46,12 @@ function HomePage() {
             ...p,
             id: p._id,
             image: p.gallery?.[0],
-            availableSizes: Array.isArray(p.sizes) ? p.sizes.map(s => s.label || s) : [],
+            // Preserve sizes array with stock data
+            sizes: p.sizes.map(size => ({
+              size: size.size,
+              stock: size.stock,
+              id: size._id
+            }))
           }));
           setAllProducts(transformed);
         } else {
@@ -43,7 +65,9 @@ function HomePage() {
   }, []);
 
   const filterByCategory = (categoryName) => {
-    return allProducts.filter(p => p.category?.toLowerCase() === categoryName.toLowerCase());
+    return allProducts.filter(p => 
+      p.category?.toLowerCase().includes(categoryName.toLowerCase())
+    );
   };
 
   const bannerRef = useRef(null);
@@ -96,12 +120,12 @@ function HomePage() {
         </div>
       </div>
 
-      {/* Category Sections using API data */}
+           {/* Updated Category Sections with size handling */}
       <CategorySection
         title="BAGGY"
         products={filterByCategory('Baggy')}
         link="/category/baggy"
-        onAddToCart={handleAddToCart}
+        onAddToCart={handleAddToCart}  // Now supports size selection
       />
       <CategorySection
         title="STRAIGHT FIT"
@@ -111,7 +135,7 @@ function HomePage() {
       />
       <CategorySection
         title="NEW ARRIVALS"
-        products={allProducts.slice(-4)} // Show last 4 as new arrivals
+        products={allProducts.slice(-4)}
         link="/category/new-arrivals"
         onAddToCart={handleAddToCart}
       />

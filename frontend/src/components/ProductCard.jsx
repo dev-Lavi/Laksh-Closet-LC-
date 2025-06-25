@@ -1,35 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import addtocartheart from '../assets/heart.svg';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 import './ProductCard.css';
 
 function ProductCard({ product }) {
-  const availableSizes = product.availableSizes || [];
-  const [selectedSize, setSelectedSize] = useState(null);
-  const [addedToCart, setAddedToCart] = useState(false);
-
-  const { addToCart, toggleFavourite, favourites } = useCart();
-  const isFavourited = favourites.some(item => item._id === product._id);
+  const { toggleFavourite, favourites } = useCart();
   const navigate = useNavigate();
-
-  const handleSizeSelect = (size) => {
-    if (availableSizes.includes(size)) {
-      setSelectedSize(size);
-      setAddedToCart(false);
-    }
-  };
-
-  const handleAddToCart = () => {
-    if (selectedSize) {
-      addToCart({ ...product, selectedSize, quantity: 1 }); // ✅ quantity added
-      setAddedToCart(true);
-    }
-  };
-
-  const handleViewCart = () => {
-    navigate('/cart');
-  };
+  const isFavourited = favourites.some(item => item._id === product._id);
+  const fallbackImage = '/fallback.jpg';
 
   return (
     <div className="product-card">
@@ -49,77 +28,40 @@ function ProductCard({ product }) {
       {/* Product Image */}
       <div
         className="product-card-image-wrap"
-        style={{ cursor: 'pointer' }}
         onClick={() => navigate(`/products/${product._id}`)}
       >
         <img
-          src={product.image || product.gallery?.[0]} // ✅ fallback to gallery
-          alt={product.name}
+          src={product.image || product.gallery?.[0] || fallbackImage}
+          alt={product.name || "Product"}
           className="product-card-image"
         />
       </div>
 
       {/* Title */}
-      <h2 className="product-card-title">{product.name}</h2>
+      <h2 className="product-card-title">{product.name || "Untitled"}</h2>
 
-      {/* Sizes */}
-      <div className="product-card-sizes-row">
-        {product.sizes.map((size, idx) => {
-          const isAvailable = availableSizes.includes(size);
-          const isSelected = size === selectedSize;
 
-          return (
-            <button
-              key={idx}
-              disabled={!isAvailable}
-              onClick={() => handleSizeSelect(size)}
-              className={`product-card-size-btn ${isSelected ? 'selected' : ''}`}
-            >
-              {size}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Divider */}
-      <div className="product-card-divider" />
-
-      {/* Price and Add to Cart */}
+      {/* Price and Select Size */}
       <div className="product-card-price-row">
         <div className="product-card-price-group">
-          <span className="product-card-price">₹{product.price}.00</span>
-          <span className="product-card-original-price">₹{product.originalPrice}.00 MRP</span>
+          <span className="product-card-price">
+            ₹{product.price ? product.price + '.00' : 'N/A'}
+          </span>
+          {product.originalPrice && (
+            <span className="product-card-original-price">
+              ₹{product.originalPrice}.00 MRP
+            </span>
+          )}
         </div>
         <span className="product-card-vertical-divider"></span>
-        {!selectedSize ? (
-          <button
-            className="product-card-add-btn select-size-btn"
-            onClick={() => navigate(`/products/${product._id}`)} // ✅ use _id
-            type="button"
-          >
-            Select Size
-          </button>
-        ) : addedToCart ? (
-          <button
-            className="product-card-add-btn view-cart-btn"
-            onClick={handleViewCart}
-            type="button"
-          >
-            View Cart
-          </button>
-        ) : (
-          <button
-            onClick={handleAddToCart}
-            className="product-card-add-btn"
-            type="button"
-          >
-            Add to Cart
-          </button>
-        )}
+        <button
+          className="product-card-add-btn select-size-btn"
+          onClick={() => navigate(`/products/${product._id}`)}
+        >
+          Select Size
+        </button>
       </div>
 
-      {/* Bottom Divider */}
-      <div className="product-card-divider" />
     </div>
   );
 }

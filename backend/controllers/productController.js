@@ -1,7 +1,8 @@
-import dotenv from 'dotenv';
+import dotenv from 'dotenv'; 
 import Product from '../models/Product.js';
 import streamifier from 'streamifier';
 import { v2 as cloudinary } from 'cloudinary';
+
 dotenv.config();
 
 cloudinary.config({
@@ -42,21 +43,36 @@ export const addProduct = async (req, res) => {
     let parsedSizes = [];
     let parsedReviews = [];
 
+    // Parse and validate sizes
     try {
       parsedSizes = sizes ? JSON.parse(sizes) : [];
+      const validSizes = ["26", "28", "30", "32", "34", "36", "38", "40"];
+
+      const invalid = parsedSizes.some(s =>
+        !validSizes.includes(String(s.size)) || typeof s.stock !== "number"
+      );
+
+      if (invalid) {
+        return res.status(400).json({
+          message: 'Sizes must be one of [26, 28, 30, 32, 34, 36, 38, 40] with numeric stock values'
+        });
+      }
     } catch {
       return res.status(400).json({ message: 'Invalid sizes format' });
     }
 
+    // Parse reviews if provided
     try {
       parsedReviews = reviews ? JSON.parse(reviews) : [];
     } catch {
       return res.status(400).json({ message: 'Invalid reviews format' });
     }
 
+    // Upload images to Cloudinary
     const uploadPromises = req.files.map(file => uploadToCloudinary(file.buffer));
     const uploadedImageUrls = await Promise.all(uploadPromises);
 
+    // Create product
     const product = new Product({
       name,
       description,
@@ -77,6 +93,7 @@ export const addProduct = async (req, res) => {
     });
   }
 };
+
 // @desc    Update product (Admin only)
 // @route   PUT /api/products/:id
 // @access  Private/Admin

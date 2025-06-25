@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
+import CategorySection from '../components/CategorySection'; // <-- Import here
 import './ProductListing.css';
 
 const ProductListing = () => {
@@ -20,7 +21,6 @@ const ProductListing = () => {
           ...p,
           id: p._id,
           image: p.gallery?.[0],
-          availableSizes: Array.isArray(p.sizes) ? p.sizes.map(s => s.label || s) : [],
         }));
         setProducts(transformed);
       } catch (err) {
@@ -60,6 +60,11 @@ const ProductListing = () => {
         </select>
       </div>
 
+      {/* Use CategorySection here */}
+      <CategorySection title="All Products" products={filteredProducts} />
+
+      {/* Optionally, keep the grid for fallback or remove it */}
+      {/* 
       <div className="product-listing-grid">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
@@ -71,6 +76,12 @@ const ProductListing = () => {
           </p>
         )}
       </div>
+      */}
+      {filteredProducts.length === 0 && (
+        <p className="no-results-msg">
+          No products found for "{searchTerm}"
+        </p>
+      )}
     </div>
   );
 };

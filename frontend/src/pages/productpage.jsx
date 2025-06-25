@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // <-- import useNavigate
+import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronDown, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import './ProductPage.css';
@@ -9,15 +9,12 @@ const ProductPage = () => {
   const [product, setProduct] = useState(null);
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState('');
-  const [addedToCart, setAddedToCart] = useState(false); // <-- new state
-  const [desktopStart, setDesktopStart] = useState(0);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [addedToCart, setAddedToCart] = useState(false);
 
-  const { addToCart } = useCart(); 
-  const { toggleFavourite, favourites } = useCart();
-  const isFavourited = favourites.some(item => item._id === product._id);
-
-  const navigate = useNavigate(); // <-- initialize
+  const { addToCart, toggleFavourite, favourites } = useCart();
+  const navigate = useNavigate();
+  const isFavourited = product && favourites.some(item => item._id === product._id);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -26,26 +23,23 @@ const ProductPage = () => {
         const data = await res.json();
         setProduct(data);
         if (data?.sizes?.length > 0) {
-          setSelectedSize(data.sizes[0]);
+          const defaultSize = data.sizes.find(s => s.stock > 0);
+          setSelectedSize(defaultSize);
         }
       } catch (error) {
         console.error('Failed to fetch product:', error);
       }
     };
-
     fetchProduct();
   }, [id]);
 
-const handleAddToCart = () => {
-  if (!selectedSize) return;
-  addToCart({ ...product, quantity, selectedSize }); // ✅ Correct usage
-  setAddedToCart(true);
-};
-
-
-  const handleViewCart = () => {
-    navigate('/cart');
+  const handleAddToCart = () => {
+    if (!selectedSize) return;
+    addToCart({ ...product, quantity, selectedSize: selectedSize.size });
+    setAddedToCart(true);
   };
+
+  const handleViewCart = () => navigate('/cart');
 
   const handleGalleryNav = (direction) => {
     if (!product) return;
@@ -56,72 +50,52 @@ const handleAddToCart = () => {
     );
   };
 
-  if (!product) {
-    return <div className="text-center py-20">Loading product...</div>;
-  }
+  if (!product) return <div className="text-center py-20">Loading product...</div>;
 
   return (
     <div className="min-h-screen bg-[#f9f9fa] py-10 px-4 font-karla">
       <div className="w-full flex justify-center">
         <div className="max-w-6xl w-full">
-{/* Gallery Section */}
-<div className="flex flex-col items-center mb-12 px-4">
-  {/* Desktop: Show all images side by side */}
-  <div className="hidden md:flex gap-4 gallery-images-row">
-    {product.gallery.map((src, i) => (
-      <img
-        key={i}
-        src={src}
-        alt={product.name}
-        className={`w-[330px] h-[480px] object-cover rounded border-2 shadow-lg cursor-pointer transition-all duration-200 ${
-          galleryIndex === i ? 'border-purple-600' : 'border-gray-300 opacity-100'
-        }`}
-        onClick={() => setGalleryIndex(i)}
-      />
-    ))}
-  </div>
-
-  {/* Mobile: Show only one image */}
-  <div className="relative w-full flex justify-center py-4 md:hidden gallery-images-row">
-    <img
-      src={product.gallery[galleryIndex]}
-      alt={product.name}
-      className="w-[300px] h-[420px] object-cover rounded border-2 shadow-lg border-purple-600"
-    />
-
-    {/* Left / Right Arrow Navigation */}
-    <button
-      onClick={() => handleGalleryNav('prev')}
-      className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white border rounded-full p-1 shadow hover:bg-gray-100"
-      aria-label="Previous Image"
-    >
-      <ChevronLeft className="w-5 h-5 text-gray-700" />
-    </button>
-    <button
-      onClick={() => handleGalleryNav('next')}
-      className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white border rounded-full p-1 shadow hover:bg-gray-100"
-      aria-label="Next Image"
-    >
-      <ChevronRight className="w-5 h-5 text-gray-700" />
-    </button>
-  </div>
-
-  {/* Thumbnails (always visible) */}
-  <div className="flex justify-center gap-2 mt-4">
-    {product.gallery.map((src, i) => (
-      <img
-        key={i}
-        src={src}
-        alt={`Thumbnail ${i}`}
-        className={`w-16 h-16 object-cover rounded cursor-pointer border-2 ${
-          galleryIndex === i ? 'border-purple-600' : 'border-gray-300'
-        }`}
-        onClick={() => setGalleryIndex(i)}
-      />
-    ))}
-  </div>
-</div>
-
+          {/* Gallery */}
+          <div className="flex flex-col items-center mb-12 px-4">
+            <div className="hidden md:flex gap-4 gallery-images-row">
+              {product.gallery.map((src, i) => (
+                <img
+                  key={i}
+                  src={src}
+                  alt={product.name}
+                  className={`w-[330px] h-[480px] object-cover rounded border-2 shadow-lg cursor-pointer transition-all duration-200 ${
+                    galleryIndex === i ? 'border-purple-600' : 'border-gray-300 opacity-100'
+                  }`}
+                  onClick={() => setGalleryIndex(i)}
+                />
+              ))}
+            </div>
+            <div className="relative w-full flex justify-center py-4 md:hidden gallery-images-row">
+              <img
+                src={product.gallery[galleryIndex]}
+                alt={product.name}
+                className="w-[300px] h-[420px] object-cover rounded border-2 shadow-lg border-purple-600"
+              />
+              <button onClick={() => handleGalleryNav('prev')} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white border rounded-full p-1 shadow hover:bg-gray-100">
+                <ChevronLeft className="w-5 h-5 text-gray-700" />
+              </button>
+              <button onClick={() => handleGalleryNav('next')} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white border rounded-full p-1 shadow hover:bg-gray-100">
+                <ChevronRight className="w-5 h-5 text-gray-700" />
+              </button>
+            </div>
+            <div className="flex justify-center gap-2 mt-4">
+              {product.gallery.map((src, i) => (
+                <img
+                  key={i}
+                  src={src}
+                  alt={`Thumbnail ${i}`}
+                  className={`w-16 h-16 object-cover rounded cursor-pointer border-2 ${galleryIndex === i ? 'border-purple-600' : 'border-gray-300'}`}
+                  onClick={() => setGalleryIndex(i)}
+                />
+              ))}
+            </div>
+          </div>
 
           {/* Product Details */}
           <div className="product-details-section">
@@ -137,11 +111,12 @@ const handleAddToCart = () => {
                 <div className="mb-3 text-sm text-gray-600 font-medium">UPI & Cards Accepted</div>
                 <div className="mb-2 text-base font-semibold">Size</div>
                 <div className="product-sizes-row">
-                  {product.sizes.map(size => (
+                  {product.sizes.map(({ size, stock }) => (
                     <button
                       key={size}
-                      className={`product-size-btn${selectedSize === size ? ' selected' : ''}`}
-                      onClick={() => setSelectedSize(size)}
+                      disabled={stock === 0}
+                      className={`product-size-btn${selectedSize?.size === size ? ' selected' : ''}`}
+                      onClick={() => setSelectedSize({ size, stock })}
                     >
                       {size}
                     </button>
@@ -161,17 +136,11 @@ const handleAddToCart = () => {
                   <button onClick={() => setQuantity(q => q + 1)}>+</button>
                 </div>
                 {!addedToCart ? (
-                  <button
-                    onClick={handleAddToCart}
-                    className="product-add-cart-btn"
-                  >
+                  <button onClick={handleAddToCart} className="product-add-cart-btn">
                     Add to cart
                   </button>
                 ) : (
-                  <button
-                    onClick={handleViewCart}
-                    className="product-add-cart-btn"
-                  >
+                  <button onClick={handleViewCart} className="product-add-cart-btn">
                     View Cart
                   </button>
                 )}
@@ -180,48 +149,47 @@ const handleAddToCart = () => {
 
             <div className="product-details-right">
               <h2 className="text-3xl font-bold mb-2 text-center">{product.name}</h2>
-<button
-  onClick={() => toggleFavourite(product)}
-  className={`border px-6 py-2 rounded-md flex items-center gap-2 transition mb-6 ${
-    isFavourited ? 'text-red-500 border-red-400' : 'text-gray-700 hover:text-black'
-  }`}
->
-  <Heart className="w-5 h-5" />
-  {isFavourited ? 'Wishlisted' : 'Wishlist'}
-</button>
+              <button
+                onClick={() => toggleFavourite(product)}
+                className={`border px-6 py-2 rounded-md flex items-center gap-2 transition mb-6 ${
+                  isFavourited ? 'text-red-500 border-red-400' : 'text-gray-700 hover:text-black'
+                }`}
+              >
+                <Heart className="w-5 h-5" />
+                {isFavourited ? 'Wishlisted' : 'Wishlist'}
+              </button>
 
-<div className="space-y-2 w-full mt-6 details-list">
-  <details className="details-row">
-    <summary className="details-summary">
-      SHIPPING AND RETURN
-      <ChevronDown className="w-4 h-4" />
-    </summary>
-    <p className="details-content">
-      Free shipping on all orders. Returns accepted within 7 days of delivery.
-    </p>
-  </details>
+              <div className="space-y-2 w-full mt-6 details-list">
+                <details className="details-row">
+                  <summary className="details-summary">
+                    SHIPPING AND RETURN
+                    <ChevronDown className="w-4 h-4" />
+                  </summary>
+                  <p className="details-content">
+                    Free shipping on all orders. Returns accepted within 7 days of delivery.
+                  </p>
+                </details>
 
-  <details className="details-row">
-    <summary className="details-summary">
-      DESCRIPTION
-      <ChevronDown className="w-4 h-4" />
-    </summary>
-    <p className="details-content">
-      {product.description || 'No description available.'}
-    </p>
-  </details>
+                <details className="details-row">
+                  <summary className="details-summary">
+                    DESCRIPTION
+                    <ChevronDown className="w-4 h-4" />
+                  </summary>
+                  <p className="details-content">
+                    {product.description || 'No description available.'}
+                  </p>
+                </details>
 
-  <details className="details-row">
-    <summary className="details-summary">
-      ADDITIONAL INFORMATION
-      <ChevronDown className="w-4 h-4" />
-    </summary>
-    <p className="details-content">
-      Material: 100% Cotton. Wash cold. Do not bleach. Made in India.
-    </p>
-  </details>
-</div>
-
+                <details className="details-row">
+                  <summary className="details-summary">
+                    ADDITIONAL INFORMATION
+                    <ChevronDown className="w-4 h-4" />
+                  </summary>
+                  <p className="details-content">
+                    Material: 100% Cotton. Wash cold. Do not bleach. Made in India.
+                  </p>
+                </details>
+              </div>
             </div>
           </div>
 

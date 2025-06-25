@@ -1,21 +1,30 @@
 import mongoose from 'mongoose';
 
 const reviewSchema = new mongoose.Schema({
-  name: String,
-  rating: Number,
-  comment: String
+  name: { type: String, required: true },
+  rating: { type: Number, required: true, min: 0, max: 5 },
+  comment: { type: String }
 }, { _id: false });
 
+const sizeSchema = new mongoose.Schema({
+  size: { type: String, required: true, enum: ["26","28","30","32","34","36","38","40"] },
+  stock: { type: Number, required: true, min: 0 }
+}, { _id: false });
 
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  description: String,
-  price: Number,
-  originalPrice: Number,
-  gallery: [String],
-  category: String,
+  description: { type: String },
+  price: { type: Number, required: true, min: 0 },
+  originalPrice: { type: Number, min: 0 },
+  gallery: [{ type: String, required: true }],
+  category: { type: String, required: true },
   reviews: [reviewSchema],
-  sizes: [String] // ✅ Now just an array of strings like ["S", "M", "L"]
+    sizes: [
+    {
+      size: { type: String, required: true },
+      stock: { type: Number, required: true, min: 0 },
+    }
+  ]
 }, {
   timestamps: true
 });
