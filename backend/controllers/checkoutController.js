@@ -96,7 +96,7 @@ export const initiateCheckout = async (req, res) => {
 
     <!-- Main Content -->
     <div style="padding: 30px;">
-      <h2 style="color: #444; margin-top: 0;">Hey there, Fashion Lover! 👗</h2>
+      <h2 style="color: #444; margin-top: 0;">Hey there, Fashion Lover! 👖</h2>
       <p>Thank you for shopping with <strong>Laksh Closet</strong>. To verify your email address and proceed with checkout, please use the OTP below:</p>
 
       <div style="background-color: #f5f5f5; border-radius: 8px; padding: 20px; text-align: center; margin: 20px 0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
