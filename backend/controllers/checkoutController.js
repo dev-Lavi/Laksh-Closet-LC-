@@ -109,7 +109,7 @@ export const initiateCheckout = async (req, res) => {
     </div>
 
     <!-- Footer -->
-    <div style="background-color: #BDE0FE; color: #333; text-align: center; padding: 20px; font-size: 14px;">
+    <div style="background-color:rgb(186, 220, 250); color: #333; text-align: center; padding: 20px; font-size: 14px;">
       <p><strong>Laksh Closet</strong><br>Timeless fashion, doorstep delivery.</p>
     </div>
 
