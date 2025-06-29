@@ -160,6 +160,11 @@
 }
 
 @media (max-width: 900px) {
+    .checkout-root {
+        padding-left: 40px;
+        padding-right: 40px;
+}
+
   .checkout-form-main {
     grid-template-columns: 1fr;
     gap: 24px;
@@ -173,13 +178,15 @@
 @media (max-width: 600px) {
   .checkout-root {
     padding: 12px 0 0 0;
+    padding-left: 20px;
+    padding-right: 20px;
   }
   .checkout-form-main {
     padding: 0 2px;
     gap: 12px;
   }
   .checkout-card {
-    padding: 12px 2px 12px 2px;
+    padding: 12px 15px 12px 15px;
   }
   .checkout-title {
     font-size: 1rem;
