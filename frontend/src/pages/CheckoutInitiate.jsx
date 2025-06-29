@@ -4,8 +4,11 @@ import { toast } from 'react-toastify';
 import { useCart } from '../context/CartContext';
 import './CheckoutInitiate.css';
 import razorpayImg from '../assets/razorpay.svg';
+import OtpVerificationModal from '../components/OtpVerificationModal';
 
 const CheckoutInitiate = () => {
+  const [otpModalOpen, setOtpModalOpen] = useState(false);
+  const [createdOrderId, setCreatedOrderId] = useState('');
   const { cartItems } = useCart();
   const [formData, setFormData] = useState({
     email: '',
@@ -69,7 +72,8 @@ const CheckoutInitiate = () => {
         payload
       );
       toast.success(res.data.message || 'Order initiated');
-      // TODO: Redirect to OTP page/modal here with res.data.orderId
+      setCreatedOrderId(res.data.orderId);
+      setOtpModalOpen(true);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Something went wrong');
     } finally {
@@ -249,6 +253,15 @@ const CheckoutInitiate = () => {
           </button>
         </div>
       </form>
+
+        {/* OTP Verification Modal */}
+      <OtpVerificationModal
+        isOpen={otpModalOpen}
+        onClose={() => setOtpModalOpen(false)}
+        email={formData.email}
+        orderId={createdOrderId}
+      />
+
     </div>
   );
 };

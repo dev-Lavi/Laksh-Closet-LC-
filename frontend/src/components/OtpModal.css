@@ -1,0 +1,52 @@
+.otp-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.otp-modal {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.otp-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  margin: 1rem 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.otp-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.btn-cancel {
+  background: #ccc;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+}
+
+.btn-verify {
+  background: #000;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+}

@@ -16,11 +16,11 @@ const orderSchema = new mongoose.Schema({
     default: 'pending',
     enum: ['pending', 'paid', 'failed']
   },
-  deliveryStatus: {
-    type: String,
-    default: 'pending',
-    enum: ['pending', 'shipped', 'delivered']
-  },
+deliveryStatus: {
+  type: String,
+  enum: ['pending', 'processing', 'shipped', 'delivered'], // ✅ added "processing"
+  default: 'pending'
+},
   isOtpVerified: {
     type: Boolean,
     default: false

@@ -83,7 +83,39 @@ export const initiateCheckout = async (req, res) => {
       from: '"Laksh Closet" <no-reply@lakshcloset.com>',
       to: email,
       subject: 'Your Checkout OTP',
-      html: `<p>Your OTP is <b>${otpCode}</b>. It is valid for 5 minutes.</p>`
+      html: `<body style="font-family: 'Karla', sans-serif; line-height: 1.6; color: #333; background-color: #fafafa; margin: 0; padding: 0;">
+  <link href="https://fonts.googleapis.com/css2?family=Karla&display=swap" rel="stylesheet">
+  <div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);">
+    
+    <!-- Header -->
+    <div style="background: linear-gradient(135deg, #CDB4DB, #FFC8DD); color: #fff; padding: 20px; text-align: center;">
+      <img src="https://res.cloudinary.com/dqur1pzx4/image/upload/v1751192795/logo_k7eod4.png" alt="Laksh Closet Logo" style="height: 70px; width: auto; margin-bottom: 10px;">
+      <h1 style="margin: 0; font-size: 28px; font-weight: 700;">Laksh Closet</h1>
+      <p style="margin: 0; font-size: 14px;">Elevate Your Everyday Style</p>
+    </div>
+
+    <!-- Main Content -->
+    <div style="padding: 30px;">
+      <h2 style="color: #444; margin-top: 0;">Hey there, Fashion Lover! 👗</h2>
+      <p>Thank you for shopping with <strong>Laksh Closet</strong>. To verify your email address and proceed with checkout, please use the OTP below:</p>
+
+      <div style="background-color: #f5f5f5; border-radius: 8px; padding: 20px; text-align: center; margin: 20px 0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);">
+        <h1 style="margin: 0; font-size: 36px; color: #C06C84;">${otpCode}</h1>
+      </div>
+
+      <p>This OTP is valid for <strong>5 minutes</strong>. Please do not share it with anyone.</p>
+      <p>If you didn’t request this, just ignore the email — no worries.</p>
+      <p>Stay stylish,<br><strong>Team Laksh Closet</strong></p>
+    </div>
+
+    <!-- Footer -->
+    <div style="background-color: #BDE0FE; color: #333; text-align: center; padding: 20px; font-size: 14px;">
+      <p><strong>Laksh Closet</strong><br>Timeless fashion, doorstep delivery.</p>
+    </div>
+
+  </div>
+</body>
+`
     });
 
     // 6️⃣ Respond to frontend with orderId
