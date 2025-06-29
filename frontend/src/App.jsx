@@ -12,6 +12,7 @@ import ProductPage from './pages/productpage';
 import AdminLogin from './pages/AdminLogin';
 import AddProduct from './pages/addproduct';
 import ProductListing from './pages/ProductListing';
+import CheckoutInitiate from './pages/CheckoutInitiate';
 
 const About = () => <div><h1>About Us</h1></div>;
 const Contact = () => <div><h1>Contact</h1></div>;
@@ -44,6 +45,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckoutInitiate />} />
           </Route>
         </Routes>
       </Router>

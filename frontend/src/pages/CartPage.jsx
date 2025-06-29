@@ -1,18 +1,19 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
+import { useNavigate } from 'react-router-dom';
 import './CartPage.css';
 import razorpayImg from '../assets/razorpay.svg'; // Adjust the path as necessary
 import { FaTrashAlt } from 'react-icons/fa';
 
 function CartPage() {
   const { cartItems, updateQuantity, removeFromCart, cartCount } = useCart();
-
+  const navigate = useNavigate();
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
-  const shipping = cartCount > 0 ? 200 : 0;
+  const shipping = cartCount > 0 ? 0 : 0;
   const total = subtotal + shipping;
 
   return (
@@ -81,7 +82,13 @@ function CartPage() {
             />
           </div>
 
-          <button className="checkout-btn">Proceed to Checkout</button>
+<button
+  className="checkout-btn"
+  onClick={() => navigate('/checkout')}
+  disabled={cartItems.length === 0}
+>
+  Proceed to Checkout
+</button>
         </div>
       </div>
     </div>

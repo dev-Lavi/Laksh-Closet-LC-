@@ -6,6 +6,7 @@ import fetch from 'node-fetch'; // for self-ping
 
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import checkoutRoutes from './routes/checkoutRoutes.js';
 // import adminRoutes from './routes/adminRoutes.js'; // Optional: If admin features are separated
 
 dotenv.config();
@@ -27,7 +28,16 @@ app.get('/ping', (req, res) => {
 
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
-// app.use('/api/admin', adminRoutes); // Optional future route
+app.use('/api/checkout', checkoutRoutes);
+
+
+// Global error handler (must be last middleware)
+app.use((err, req, res, next) => {
+  console.error('🔴 Unhandled error:', err.stack);
+  res.status(500).json({ message: 'Something went wrong on the server.' });
+});
+
+// app.use('/api/admin', adminRoutes); 
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
