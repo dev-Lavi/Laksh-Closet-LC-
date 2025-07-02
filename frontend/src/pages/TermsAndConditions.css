@@ -1,0 +1,32 @@
+.terms-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  line-height: 1.7;
+  font-family: 'Segoe UI', sans-serif;
+  background: #fff;
+  border-radius: 10px;
+}
+
+.terms-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.terms-container h2 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  color: #444;
+}
+
+.terms-container p {
+  font-size: 1rem;
+  color: #555;
+  margin: 0.5rem 0;
+}
+
+.terms-container a {
+  color: #0073e6;
+  text-decoration: underline;
+}

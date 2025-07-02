@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './footer.css';
 import logo from '../assets/logo.svg'; // Adjust if needed
 import instagram from '../assets/insta.svg';
@@ -16,7 +17,6 @@ const Footer = () => {
               <h4>CUSTOMER SERVICES</h4>
               <ul>
                 <li>contact us</li>
-                <li>photos & reviews</li>
                 <li>schedule an appointment</li>
                 <li>track order</li>
                 <li>need help?</li>
@@ -25,10 +25,10 @@ const Footer = () => {
             <div>
               <h4>ABOUT US</h4>
               <ul>
+                <Link to="/terms">Terms &amp; Conditions</Link>
                 <li>privacy policy</li>
                 <li>exchange policy</li>
                 <li>coupons & offers</li>
-                <li>frequently asked questions</li>
               </ul>
             </div>
             <div>
@@ -44,11 +44,31 @@ const Footer = () => {
 
         {/* Right Section (Logo + Icons) */}
         <div className="footer-brand">
-          <img src={logo} alt="Laksh Closet Logo" className="footer-logo" />
+                    <Link to="/">
+            <img src={logo} alt="Laksh Closet Logo" className="footer-logo" />
+          </Link>
           <div className="footer-brand-socials">
-            <img src={instagram} alt="Instagram" />
+            <a
+              href="https://www.instagram.com/lakshcloset?igsh=ZHZiYWJoeXB6c3Vi"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={instagram} alt="Instagram" />
+            </a>
+                        <a
+              href="https://www.instagram.com/lakshcloset?igsh=ZHZiYWJoeXB6c3Vi"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
             <img src={twitter} alt="Twitter" />
+            </a>
+                        <a
+              href="https://www.instagram.com/lakshcloset?igsh=ZHZiYWJoeXB6c3Vi"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
             <img src={facebook} alt="Facebook" />
+            </a>
           </div>
         </div>
       </div>

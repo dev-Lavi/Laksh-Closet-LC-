@@ -42,12 +42,12 @@ export const verifyOtp = async (req, res) => {
     order.isOtpVerified = true;
 
     // If COD: treat as paid + prevent TTL deletion
-    if (order.paymentMethod === 'cod') {
-      order.paymentStatus = 'paid';
-      order.deliveryStatus = 'processing';
-      order.verifiedAt = new Date();
-      order.expiresAt = undefined; // 👈 Prevent TTL deletion
-    }
+    // if (order.paymentMethod === 'cod') {
+    //   order.paymentStatus = 'paid';
+    //   order.deliveryStatus = 'processing';
+    //   order.verifiedAt = new Date();
+    //   order.expiresAt = undefined; // 👈 Prevent TTL deletion
+    // }
 
     await order.save();
 

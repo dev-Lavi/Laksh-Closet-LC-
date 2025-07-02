@@ -19,7 +19,7 @@ const CheckoutInitiate = () => {
     state: '',
     address: '',
     pinCode: '',
-    paymentMethod: '',
+    paymentMethod: 'prepaid',
   });
 
   const [errors, setErrors] = useState({});
@@ -223,12 +223,12 @@ const CheckoutInitiate = () => {
             <input
               type="radio"
               name="paymentMethod"
-              value="cod"
-              checked={formData.paymentMethod === 'cod'}
+              value="prepaid"
+              checked={formData.paymentMethod === 'prepaid'}
               onChange={handleChange}
-              id="pay-cod"
+              id="pay-online"
             />
-            <label htmlFor="pay-cod" style={{ margin: 0, fontWeight: 500 }}>
+            <label htmlFor="pay-online" style={{ margin: 0, fontWeight: 500 }}>
               Pay online via UPI, wallet, card etc.
             </label>
             <img src={razorpayImg} alt="Cashfree" style={{ height: 22, marginLeft: 8 }} />

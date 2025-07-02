@@ -49,6 +49,8 @@ export const initiateCheckout = async (req, res) => {
     const total = subtotal + codFee + tax;
 
     // 3️⃣ Save order with extra fields
+    const customerName = `${firstName} ${lastName}`;
+
     const newOrder = await Order.create({
       email,
       phone,
@@ -67,7 +69,8 @@ export const initiateCheckout = async (req, res) => {
       expiresAt: new Date(Date.now() + 15 * 60 * 1000), // ✨ TTL logic (15 mins)
       totalAmount: total,
       tax,
-      codFee
+      codFee,
+      customerName
     });
 
     // 4️⃣ Generate and save OTP

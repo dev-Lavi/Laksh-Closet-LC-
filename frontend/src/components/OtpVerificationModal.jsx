@@ -12,19 +12,30 @@ const OtpVerificationModal = ({ isOpen, onClose, email, orderId }) => {
 
     setLoading(true);
     try {
+      // Step 1: Verify OTP
       const res = await axios.post(
         `${import.meta.env.VITE_RENDER_EXTERNAL_URL}/api/checkout/verify-otp`,
-        {
-          email,
-          otp,
-          orderId,
-        }
+        { email, otp, orderId }
       );
+
       toast.success(res.data.message);
-      onClose(); // close modal
-      // Redirect or show confirmation here
+
+      // Step 2: Initiate Cashfree Payment
+      const payRes = await axios.post(
+        `${import.meta.env.VITE_RENDER_EXTERNAL_URL}/api/payment/initiate`,
+        { orderId }
+      );
+
+      
+      const sessionId = payRes.data.payment_session_id;
+
+
+      console.log('Redirecting to Cashfree with sessionId:', sessionId);
+      // Step 3: Redirect to Cashfree Checkout
+      window.location.href = `https://sandbox.cashfree.com/pg/view/payment?payment_session_id=${sessionId}`;
+
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Invalid OTP');
+      toast.error(err.response?.data?.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
@@ -37,17 +48,25 @@ const OtpVerificationModal = ({ isOpen, onClose, email, orderId }) => {
       <div className="otp-modal">
         <h2>Verify OTP</h2>
         <p>Enter the 6-digit OTP sent to <strong>{email}</strong></p>
+
         <input
           type="text"
           maxLength={6}
           value={otp}
-          onChange={(e) => setOtp(e.target.value)}
+          onChange={(e) => {
+            const numericOtp = e.target.value.replace(/\D/g, '');
+            setOtp(numericOtp);
+          }}
           className="otp-input"
           placeholder="Enter OTP"
+          disabled={loading}
         />
+
         <div className="otp-buttons">
-          <button onClick={onClose} className="btn-cancel">Cancel</button>
-          <button onClick={handleVerify} className="btn-verify" disabled={loading}>
+          <button onClick={onClose} className="btn-cancel" disabled={loading}>
+            Cancel
+          </button>
+          <button onClick={handleVerify} className="btn-verify" disabled={loading || otp.length !== 6}>
             {loading ? 'Verifying...' : 'Verify OTP'}
           </button>
         </div>

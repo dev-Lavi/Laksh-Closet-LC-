@@ -44,7 +44,7 @@ function Header() {
         </div>
 
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          <img src={logo} alt="Laksh Closet Logo" className="h-18" />
+         <Link to="/"><img src={logo} alt="Laksh Closet Logo" className="h-18" /></Link>
         </div>
 
         <div className="flex items-center gap-0 sm:gap-1 flex-1 justify-end relative">

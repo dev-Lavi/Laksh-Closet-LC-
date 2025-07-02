@@ -7,6 +7,7 @@ import fetch from 'node-fetch'; // for self-ping
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import checkoutRoutes from './routes/checkoutRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
 // import adminRoutes from './routes/adminRoutes.js'; // Optional: If admin features are separated
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.get('/ping', (req, res) => {
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/checkout', checkoutRoutes);
+app.use('/api/payment', paymentRoutes);
 
 
 // Global error handler (must be last middleware)
