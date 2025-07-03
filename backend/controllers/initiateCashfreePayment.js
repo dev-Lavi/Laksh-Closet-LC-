@@ -29,14 +29,14 @@ export const initiateCashfreePayment = async (req, res) => {
         customer_phone: order.phone,
       },
       order_meta: {
-        return_url: `https://lakshcloset.com/payment-success?order_id={order_id}`,
-        notify_url: `https://your-backend.com/api/payment/webhook`,
+        return_url: `https://laksh-closet-lc.vercel.app/payment-success?order_id={order_id}`,
+        notify_url: `http://localhost:5000/api/payment/webhook`,
       },
     };
 
     // Send request to Cashfree
     const response = await axios.post(
-      'https://sandbox.cashfree.com/pg/orders',
+      'https://api.cashfree.com/pg/orders',
       payload,
       {
         headers: {

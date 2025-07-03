@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './OtpModal.css'; // you can style this modal accordingly
+import './OtpModal.css';
 import { toast } from 'react-toastify';
 
 const OtpVerificationModal = ({ isOpen, onClose, email, orderId }) => {
@@ -8,7 +8,9 @@ const OtpVerificationModal = ({ isOpen, onClose, email, orderId }) => {
   const [loading, setLoading] = useState(false);
 
   const handleVerify = async () => {
-    if (!otp || otp.length !== 6) return toast.error("Enter a valid 6-digit OTP");
+    if (!otp || otp.length !== 6) {
+      return toast.error("Enter a valid 6-digit OTP");
+    }
 
     setLoading(true);
     try {
@@ -17,7 +19,6 @@ const OtpVerificationModal = ({ isOpen, onClose, email, orderId }) => {
         `${import.meta.env.VITE_RENDER_EXTERNAL_URL}/api/checkout/verify-otp`,
         { email, otp, orderId }
       );
-
       toast.success(res.data.message);
 
       // Step 2: Initiate Cashfree Payment
@@ -26,15 +27,19 @@ const OtpVerificationModal = ({ isOpen, onClose, email, orderId }) => {
         { orderId }
       );
 
-      
       const sessionId = payRes.data.payment_session_id;
+      console.log('Received session ID:', sessionId);
 
+      // Step 3: Redirect to Cashfree Hosted Checkout using SDK
+      const cashfree = window.Cashfree({ mode: import.meta.env.MODE === 'production' ? 'production' : 'sandbox' });
 
-      console.log('Redirecting to Cashfree with sessionId:', sessionId);
-      // Step 3: Redirect to Cashfree Checkout
-      window.location.href = `https://sandbox.cashfree.com/pg/view/payment?payment_session_id=${sessionId}`;
+      cashfree.checkout({
+        paymentSessionId: sessionId,
+        redirectTarget: "_self", // You can also use "_blank", "_modal", or a DOM element
+      });
 
     } catch (err) {
+      console.error(err);
       toast.error(err.response?.data?.message || 'Something went wrong');
     } finally {
       setLoading(false);
