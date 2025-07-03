@@ -30,13 +30,19 @@ const OtpVerificationModal = ({ isOpen, onClose, email, orderId }) => {
       const sessionId = payRes.data.payment_session_id;
       console.log('Received session ID:', sessionId);
 
-      // Step 3: Redirect to Cashfree Hosted Checkout using SDK
-      const cashfree = window.Cashfree({ mode: import.meta.env.MODE === 'production' ? 'production' : 'sandbox' });
+      if (!window.Cashfree) {
+      toast.error("Cashfree SDK not loaded. Try again later.");
+      return;
+    }
 
-      cashfree.checkout({
-        paymentSessionId: sessionId,
-        redirectTarget: "_self", // You can also use "_blank", "_modal", or a DOM element
-      });
+      // Step 3: Redirect to Cashfree Hosted Checkout using SDK
+const cashfree = window.Cashfree({ mode: 'production' });
+
+cashfree.checkout({
+  paymentSessionId: sessionId,
+  redirectTarget: "_self", // You can also use "_blank", "_modal", or a DOM element
+});
+
 
     } catch (err) {
       console.error(err);
