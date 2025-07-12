@@ -2,6 +2,8 @@ import validator from 'validator';
 import nodemailer from 'nodemailer';
 import Otp from '../models/Otp.js';
 import Order from '../models/Order.js';
+import Product from '../models/Product.js';
+
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -38,11 +40,17 @@ export const initiateCheckout = async (req, res) => {
     }
 
     // 2️⃣ Calculate totals (temp price logic)
-    let subtotal = 0;
-    for (const item of cart) {
-      if (!item.productId || !item.quantity) continue;
-      subtotal += 880 * item.quantity;
-    }
+let subtotal = 0;
+
+for (const item of cart) {
+  if (!item.productId || !item.quantity) continue;
+
+  const product = await Product.findById(item.productId);
+  if (!product) continue; // or handle missing product error
+
+  subtotal += product.price * item.quantity;
+}
+
 
     const codFee = paymentMethod === 'cod' ? 200 : 0;
     const tax = +(subtotal * 0.08).toFixed(2);

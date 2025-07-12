@@ -33,7 +33,7 @@ app.use('/api/checkout', checkoutRoutes);
 app.use('/api/payment', paymentRoutes);
 
 
-// Global error handler (must be last middleware)
+
 app.use((err, req, res, next) => {
   console.error('🔴 Unhandled error:', err.stack);
   res.status(500).json({ message: 'Something went wrong on the server.' });
@@ -41,7 +41,7 @@ app.use((err, req, res, next) => {
 
 // app.use('/api/admin', adminRoutes); 
 
-// MongoDB connection
+
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
