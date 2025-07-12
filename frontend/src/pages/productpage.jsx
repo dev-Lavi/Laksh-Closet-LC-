@@ -11,6 +11,7 @@ const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
   const [addedToCart, setAddedToCart] = useState(false);
+const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 768);
 
   const { addToCart, toggleFavourite, favourites } = useCart();
   const navigate = useNavigate();
@@ -33,6 +34,12 @@ const ProductPage = () => {
     fetchProduct();
   }, [id]);
 
+useEffect(() => {
+  const handleResize = () => setIsLargeScreen(window.innerWidth >= 768);
+  window.addEventListener('resize', handleResize);
+  return () => window.removeEventListener('resize', handleResize);
+}, []);
+
   const handleAddToCart = () => {
     if (!selectedSize) return;
     addToCart({ ...product, quantity, selectedSize: selectedSize.size });
@@ -52,50 +59,87 @@ const ProductPage = () => {
 
   if (!product) return <div className="text-center py-20">Loading product...</div>;
 
+  const displayedImages = isLargeScreen ? product.gallery.slice(0, 3) : product.gallery;
+
   return (
     <div className="min-h-screen bg-[#f9f9fa] py-10 px-4 font-karla">
       <div className="w-full flex justify-center">
         <div className="max-w-6xl w-full">
           {/* Gallery */}
-          <div className="flex flex-col items-center mb-12 px-4">
-            <div className="hidden md:flex gap-4 gallery-images-row">
-              {product.gallery.map((src, i) => (
-                <img
-                  key={i}
-                  src={src}
-                  alt={product.name}
-                  className={`w-[330px] h-[480px] object-cover rounded border-2 shadow-lg cursor-pointer transition-all duration-200 ${
-                    galleryIndex === i ? 'border-purple-600' : 'border-gray-300 opacity-100'
-                  }`}
-                  onClick={() => setGalleryIndex(i)}
-                />
-              ))}
-            </div>
-            <div className="relative w-full flex justify-center py-4 md:hidden gallery-images-row">
-              <img
-                src={product.gallery[galleryIndex]}
-                alt={product.name}
-                className="w-[300px] h-[420px] object-cover rounded border-2 shadow-lg border-purple-600"
-              />
-              <button onClick={() => handleGalleryNav('prev')} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white border rounded-full p-1 shadow hover:bg-gray-100">
-                <ChevronLeft className="w-5 h-5 text-gray-700" />
-              </button>
-              <button onClick={() => handleGalleryNav('next')} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white border rounded-full p-1 shadow hover:bg-gray-100">
-                <ChevronRight className="w-5 h-5 text-gray-700" />
-              </button>
-            </div>
-            <div className="flex justify-center gap-2 mt-4">
-              {product.gallery.map((src, i) => (
-                <img
-                  key={i}
-                  src={src}
-                  alt={`Thumbnail ${i}`}
-                  className={`w-16 h-16 object-cover rounded cursor-pointer border-2 ${galleryIndex === i ? 'border-purple-600' : 'border-gray-300'}`}
-                  onClick={() => setGalleryIndex(i)}
-                />
-              ))}
-            </div>
+<div className="flex flex-col items-center mb-12 px-4">
+  {/* Large Screen Gallery - Show only first 3 */}
+{/* Large Screen Gallery with Scroll Arrows */}
+<div className="hidden md:flex items-center relative w-full max-w-6xl mx-auto mb-6">
+  <button
+    onClick={() => {
+      const container = document.getElementById('scrollable-gallery');
+      container.scrollLeft -= 400;
+    }}
+    className="absolute left-0 z-10 bg-white shadow-md border rounded-full p-1 hover:bg-gray-100"
+  >
+    <ChevronLeft className="w-6 h-6 text-gray-600" />
+  </button>
+
+  <div
+    id="scrollable-gallery"
+    className="flex gap-4 overflow-x-auto scroll-smooth px-10"
+    style={{ scrollBehavior: 'smooth', scrollbarWidth: 'none' }}
+  >
+    {product.gallery.map((src, i) => (
+      <img
+        key={i}
+        src={src}
+        alt={`Image ${i}`}
+        className={`w-[330px] h-[480px] object-cover rounded border-2 shadow-lg cursor-pointer transition-all duration-200 ${
+          galleryIndex === i ? 'border-purple-600' : 'border-gray-300'
+        }`}
+        onClick={() => setGalleryIndex(i)}
+      />
+    ))}
+  </div>
+
+  <button
+    onClick={() => {
+      const container = document.getElementById('scrollable-gallery');
+      container.scrollLeft += 400;
+    }}
+    className="absolute right-0 z-10 bg-white shadow-md border rounded-full p-1 hover:bg-gray-100"
+  >
+    <ChevronRight className="w-6 h-6 text-gray-600" />
+  </button>
+</div>
+
+{/* Mobile View */}
+<div className="relative w-full flex justify-center py-4 md:hidden gallery-images-row">
+  <img
+    src={product.gallery[galleryIndex]}
+    alt={product.name}
+    className="w-[300px] h-[420px] object-cover rounded border-2 shadow-lg border-purple-600"
+  />
+  <button onClick={() => handleGalleryNav('prev')} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white border rounded-full p-1 shadow hover:bg-gray-100">
+    <ChevronLeft className="w-5 h-5 text-gray-700" />
+  </button>
+  <button onClick={() => handleGalleryNav('next')} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white border rounded-full p-1 shadow hover:bg-gray-100">
+    <ChevronRight className="w-5 h-5 text-gray-700" />
+  </button>
+</div>
+
+{/* ✅ Thumbnails — always show all */}
+<div className="flex justify-center gap-2 mt-4 flex-wrap max-w-full overflow-x-auto">
+  {product.gallery.map((src, i) => (
+    <img
+      key={i}
+      src={src}
+      alt={`Thumbnail ${i}`}
+      className={`w-16 h-16 object-cover rounded cursor-pointer border-2 ${
+        galleryIndex === i ? 'border-purple-600' : 'border-gray-300'
+      }`}
+      onClick={() => setGalleryIndex(i)}
+    />
+  ))}
+</div>
           </div>
+
 
           {/* Product Details */}
           <div className="product-details-section">

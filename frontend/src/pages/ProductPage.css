@@ -551,3 +551,14 @@ details[open] .details-summary {
   .md\:flex { display: flex !important; }
   .md\:hidden { display: none !important; }
 }
+
+/* ProductPage.css */
+#scrollable-gallery::-webkit-scrollbar {
+  display: none;
+}
+#scrollable-gallery {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  margin-top: 27px;
+  margin-bottom: 27px;
+}
