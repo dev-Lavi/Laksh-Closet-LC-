@@ -36,7 +36,7 @@ export const initiateCashfreePayment = async (req, res) => {
       },
       order_meta: {
         return_url: `https://laksh-closet-lc.vercel.app/order-success`,
-        notify_url: `https://cash-cue.onrender.com/api/payment/webhook`,
+        notify_url: `https://laksh-closet.onrender.com/api/webhook/payment`,
       },
     };
 
