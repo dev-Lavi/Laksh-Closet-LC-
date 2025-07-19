@@ -6,6 +6,10 @@ export const initiateCashfreePayment = async (req, res) => {
   try {
     const { orderId } = req.body;
 
+    if (!orderId) {
+      return res.status(400).json({ message: 'Missing orderId in request body' });
+    }
+
     // Fetch the order
     const order = await Order.findById(orderId);
     if (!order) {
@@ -16,6 +20,8 @@ export const initiateCashfreePayment = async (req, res) => {
     if (!order.isOtpVerified) {
       return res.status(400).json({ message: 'OTP not verified for this order' });
     }
+
+
 
     // Prepare payload for Cashfree
     const payload = {
@@ -29,7 +35,7 @@ export const initiateCashfreePayment = async (req, res) => {
         customer_phone: order.phone,
       },
       order_meta: {
-        return_url: `https://laksh-closet-lc.vercel.app/payment-success?order_id={order_id}`,
+        return_url: `https://laksh-closet-lc.vercel.app/order-success`,
         notify_url: `https://cash-cue.onrender.com/api/payment/webhook`,
       },
     };
@@ -49,6 +55,10 @@ export const initiateCashfreePayment = async (req, res) => {
     );
 
     const { payment_session_id } = response.data;
+
+    if (!payment_session_id) {
+      return res.status(500).json({ message: 'Payment session not created' });
+    }
 
     // Send session ID to frontend
     res.status(200).json({

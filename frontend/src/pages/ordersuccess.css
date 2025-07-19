@@ -1,0 +1,151 @@
+/* OrderSuccess.css */
+
+.order-success-root {
+  min-height: 100vh;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px 0 0 0;
+}
+
+.order-success-card {
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: none;
+  width: 100%;
+  max-width: 700px;
+  padding: 48px 32px 32px 32px;
+  margin: 0 auto 32px auto;
+  text-align: center;
+}
+
+.order-success-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px auto;
+  display: block;
+}
+
+.order-success-title {
+  font-size: 2.1rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #111;
+}
+
+.order-success-desc {
+  color: #444;
+  font-size: 1.08rem;
+  margin-bottom: 32px;
+}
+
+.order-success-orderid {
+  font-weight: 600;
+  color: #222;
+}
+
+.order-success-items-box {
+  background: #f7f7f7;
+  border-radius: 20px;
+  padding: 24px 18px;
+  margin: 0 auto 10px auto;
+  max-width: 500px;
+}
+
+.order-success-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1.5px solid #e5e7eb;
+}
+
+.order-success-item:last-child {
+  border-bottom: none;
+}
+
+.order-success-item-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.order-success-item-img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+}
+
+.order-success-item-details {
+  text-align: left;
+}
+
+.order-success-item-name {
+  font-weight: 600;
+  color: #222;
+  font-size: 1.04rem;
+  margin-bottom: 2px;
+}
+
+.order-success-item-price {
+  color: #666;
+  font-size: 0.98rem;
+}
+
+.order-success-item-total {
+  color: #222;
+  font-size: 1.04rem;
+  font-weight: 500;
+}
+
+.order-success-back-btn {
+  margin: 0 auto;
+  margin-top: 12px;
+  padding: 12px 38px;
+  background: #fff;
+  color: #111;
+  border: 2px solid #111;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  display: block;
+}
+
+.order-success-back-btn:hover {
+  background: #111;
+  color: #fff;
+}
+
+@media (max-width: 700px) {
+  .order-success-card {
+    padding: 28px 4vw 24px 4vw;
+    max-width: 98vw;
+  }
+  .order-success-items-box {
+    padding: 16px 2vw;
+    max-width: 98vw;
+  }
+  .order-success-item-img {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-success-title {
+    font-size: 1.3rem;
+  }
+  .order-success-card {
+    padding: 16px 2vw 16px 2vw;
+  }
+  .order-success-items-box {
+    padding: 10px 3vw;
+  }
+}

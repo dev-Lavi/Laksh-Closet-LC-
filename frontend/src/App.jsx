@@ -5,7 +5,6 @@ import { CartProvider } from './context/CartContext';
 
 import Header from './components/header';
 import Footer from './components/footer';
-
 import HomePage from './pages/homepage';
 import CartPage from './pages/CartPage';
 import ProductPage from './pages/productpage';
@@ -14,7 +13,7 @@ import AddProduct from './pages/addproduct';
 import ProductListing from './pages/ProductListing';
 import CheckoutInitiate from './pages/CheckoutInitiate';
 import TermsAndConditions from './pages/TermsAndConditions';
-
+import OrderSuccess from './pages/OrderSuccess';
 const About = () => <div><h1>About Us</h1></div>;
 const Contact = () => <div><h1>Contact</h1></div>;
 
@@ -48,6 +47,7 @@ function App() {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutInitiate />} />
             <Route path="/terms" element={<TermsAndConditions />} />
+            <Route path="/order-success" element={<OrderSuccess />} />
           </Route>
         </Routes>
       </Router>

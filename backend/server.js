@@ -8,6 +8,7 @@ import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import checkoutRoutes from './routes/checkoutRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
+import webhookRoutes from './routes/webhookRoutes.js';
 // import adminRoutes from './routes/adminRoutes.js'; // Optional: If admin features are separated
 
 dotenv.config();
@@ -26,6 +27,12 @@ app.get('/', (req, res) => {
 app.get('/ping', (req, res) => {
   res.send('pong');
 });
+
+app.use(
+  '/api/webhook',
+  express.raw({ type: 'application/json' }), // Important for Cashfree verification
+  webhookRoutes
+);
 
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
