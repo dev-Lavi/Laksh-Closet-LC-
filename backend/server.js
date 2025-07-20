@@ -9,6 +9,8 @@ import userRoutes from './routes/userRoutes.js';
 import checkoutRoutes from './routes/checkoutRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import webhookRoutes from './routes/webhookRoutes.js';
+import helmet from 'helmet';
+app.use(helmet());
 // import adminRoutes from './routes/adminRoutes.js'; // Optional: If admin features are separated
 
 dotenv.config();
@@ -18,6 +20,7 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(helmet());
 
 // Routes
 app.get('/', (req, res) => {
