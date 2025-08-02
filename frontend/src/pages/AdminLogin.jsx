@@ -39,7 +39,7 @@ const res = await fetch(`${import.meta.env.VITE_RENDER_EXTERNAL_URL}/api/users/l
 
       localStorage.setItem('token', data.token);
       toast.success('Login successful!');
-      setTimeout(() => navigate('/admin/add-product'), 1000);
+      setTimeout(() => navigate('/admin/Dashboard'), 1000);
     } catch (error) {
       console.error(error);
       toast.error('Something went wrong');
