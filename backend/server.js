@@ -2,15 +2,17 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import fetch from 'node-fetch'; // for self-ping
+import fetch from 'node-fetch'; // For self-ping
+import helmet from 'helmet';
 
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import checkoutRoutes from './routes/checkoutRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import webhookRoutes from './routes/webhookRoutes.js';
-import helmet from 'helmet';
-app.use(helmet());
+import orderRoutes from './routes/orderRoutes.js'; 
+
+
 // import adminRoutes from './routes/adminRoutes.js'; // Optional: If admin features are separated
 
 dotenv.config();
@@ -41,6 +43,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/orders', orderRoutes);
 
 
 

@@ -23,6 +23,12 @@ const orderSchema = new mongoose.Schema({
     enum: ['pending', 'processing', 'shipped', 'delivered'],
     default: 'pending',
   },
+
+    trackingId: {
+    type: String,
+    default: null,
+  },
+
   isOtpVerified: {
     type: Boolean,
     default: false,
@@ -30,7 +36,7 @@ const orderSchema = new mongoose.Schema({
   verifiedAt: Date,
 
   otpGeneratedAt: Date,
-  expiresAt: Date, // TTL
+  //expiresAt: Date, // TTL
 
   totalAmount: Number,
   tax: Number,
@@ -43,6 +49,6 @@ const orderSchema = new mongoose.Schema({
 });
 
 // TTL index
-orderSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+//orderSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 export default mongoose.model('Order', orderSchema);

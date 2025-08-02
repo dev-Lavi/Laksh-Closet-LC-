@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import successTick from '../assets/success-tick.svg';
+import successTick from '../assets/success-Tick.svg';
 import { useCart } from '../context/CartContext';
-import './OrderSuccess.css';
+import './ordersuccess.css';
 
 const OrderSuccess = ({ orderId = '#e8e7rv' }) => {
   const { cartItems } = useCart();

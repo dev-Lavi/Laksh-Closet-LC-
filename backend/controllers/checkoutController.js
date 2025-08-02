@@ -74,7 +74,7 @@ for (const item of cart) {
       deliveryStatus: 'pending',
       isOtpVerified: false,                // ✨ Track OTP
       otpGeneratedAt: new Date(),          // ✨ For expiry if needed
-      expiresAt: new Date(Date.now() + 15 * 60 * 1000), // ✨ TTL logic (15 mins)
+      //expiresAt: new Date(Date.now() + 15 * 60 * 1000), // ✨ TTL logic (15 mins)
       totalAmount: total,
       tax,
       codFee,

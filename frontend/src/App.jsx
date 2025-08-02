@@ -14,6 +14,7 @@ import ProductListing from './pages/ProductListing';
 import CheckoutInitiate from './pages/CheckoutInitiate';
 import TermsAndConditions from './pages/TermsAndConditions';
 import OrderSuccess from './pages/OrderSuccess';
+import Dashboard from './pages/Dashboard';
 const About = () => <div><h1>About Us</h1></div>;
 const Contact = () => <div><h1>Contact</h1></div>;
 
@@ -36,6 +37,7 @@ function App() {
           {/* Admin-only Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/add-product" element={<AddProduct />} />
+          <Route path="/admin/Dashboard" element={<Dashboard />} />
 
           {/* Public Routes */}
           <Route element={<Layout />}>
