@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./DashboardSidebar.css";
 import logo from "../assets/logo.svg";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function OrdersDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -20,9 +21,12 @@ export default function OrdersDashboard() {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/orders/paid", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+const res = await axios.get(
+  `${import.meta.env.VITE_RENDER_EXTERNAL_URL}/api/orders/paid`,
+  {
+    headers: { Authorization: `Bearer ${token}` },
+  }
+);
       setOrders(res.data);
       setLoading(false);
     } catch (error) {
@@ -32,28 +36,37 @@ export default function OrdersDashboard() {
     }
   };
 
-  const markShipped = async (orderId) => {
-    try {
-      const trackingId = trackingInputs[orderId];
-      if (!trackingId) {
-        toast.warning("⚠️ Please enter tracking ID first");
-        return;
-      }
 
-      await axios.put(
-        `http://localhost:5000/api/orders/${orderId}/ship`,
-        { trackingId },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+  const [loadingOrderId, setLoadingOrderId] = useState(null);
 
-      toast.success("✅ Order marked as shipped & email sent!");
-      setTrackingInputs((prev) => ({ ...prev, [orderId]: "" })); // clear input
-      fetchOrders(); // refresh list
-    } catch (error) {
-      console.error("Error marking shipped:", error);
-      toast.error("❌ Failed to mark order as shipped");
+
+const markShipped = async (orderId) => {
+  try {
+    const trackingId = trackingInputs[orderId];
+    if (!trackingId) {
+      toast.warning("⚠️ Please enter tracking ID first");
+      return;
     }
-  };
+
+    setLoadingOrderId(orderId); // Start loading
+
+    await axios.put(
+      `${import.meta.env.VITE_RENDER_EXTERNAL_URL}/api/orders/${orderId}/ship`,
+      { trackingId },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    toast.success("✅ Order marked as shipped & email sent!");
+    setTrackingInputs((prev) => ({ ...prev, [orderId]: "" }));
+    fetchOrders();
+  } catch (error) {
+    console.error("Error marking shipped:", error);
+    toast.error("❌ Failed to mark order as shipped");
+  } finally {
+    setLoadingOrderId(null); // Stop loading
+  }
+};
+
 
   const shippedOrders = orders.filter((o) => o.deliveryStatus === "shipped");
   const unshippedOrders = orders.filter((o) => o.deliveryStatus === "pending");
@@ -88,12 +101,11 @@ export default function OrdersDashboard() {
           </button>
         </div>
         <nav className="dashboard-sidebar-nav">
-          <SidebarItem icon={<Home size={18} />} label="Dashboard" />
-          <SidebarItem icon={<Package size={18} />} label="Tracking" />
-          <SidebarItem icon={<Package size={18} />} label="Products" />
-          <SidebarItem icon={<Plus size={18} />} label="Add" />
-          <SidebarItem icon={<CreditCard size={18} />} label="Orders" active />
-          <SidebarItem icon={<User size={18} />} label="User" />
+  <SidebarItem icon={<Home size={18} />} label="Dashboard" to="/dashboard" />
+  <SidebarItem icon={<Package size={18} />} label="Update Product" to="/admin/update-product" />
+  <SidebarItem icon={<CreditCard size={18} />} label="Add Product" to="/admin/add-product" />
+  <SidebarItem icon={<CreditCard size={18} />} label="Delete product" to="/admin/delete-product" />
+  <SidebarItem icon={<User size={18} />} label="User" to="/user" />
         </nav>
       </aside>
 
@@ -187,12 +199,16 @@ export default function OrdersDashboard() {
                               })
                             }
                           />
-                          <button
-                            onClick={() => markShipped(order._id)}
-                            className="ship-button"
-                          >
-                            Mark Shipped
-                          </button>
+{loadingOrderId === order._id ? (
+  <div className="w-6 h-6 border-4 border-[#A54AFF] border-t-transparent rounded-full animate-spin mx-auto" />
+) : (
+  <button 
+    onClick={() => markShipped(order._id)}
+    className="ship-button bg-[#A54AFF] text-white px-4 py-2 rounded hover:bg-[#923fff] transition duration-200"
+  >
+    Mark Shipped
+  </button>
+)}
                         </div>
                       </div>
                     </div>
@@ -262,17 +278,21 @@ export default function OrdersDashboard() {
   );
 }
 
-function SidebarItem({ icon, label, active }) {
+const SidebarItem = ({ icon, label, to }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isActive = location.pathname === to;
+
   return (
     <div
-      className={`flex items-center gap-3 px-4 py-2 rounded-lg cursor-pointer transition-all ${
-        active
-          ? "bg-[#F5F2FF] text-[#A54AFF] font-medium"
-          : "hover:bg-gray-100 text-gray-700"
-      }`}
+      onClick={() => navigate(to)}
+      className={`flex items-center gap-2 p-3 cursor-pointer rounded-lg transition-colors
+        ${isActive ? "bg-[#A54AFF] text-white" : "text-gray-800 hover:bg-gray-100"}
+      `}
     >
-      <div>{icon}</div>
+      {icon}
       <span>{label}</span>
     </div>
   );
-}
+};

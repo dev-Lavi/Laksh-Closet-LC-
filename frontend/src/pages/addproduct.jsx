@@ -95,6 +95,7 @@ const res = await axios.post(
   };
 
   return (
+    
     <div className="add-product-card">
       <form onSubmit={handleSubmit} className="add-product-form">
         <h2 className="add-product-title">Upload Product</h2>

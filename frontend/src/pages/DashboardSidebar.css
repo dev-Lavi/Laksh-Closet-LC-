@@ -1,6 +1,7 @@
 /* ===== Sidebar ===== */
 .dashboard-sidebar {
   width: 240px;
+  height: 100%;
   background: #ffffff;
   border-right: 1px solid #e5e7eb;
   padding: 1.5rem 1rem;
@@ -19,13 +20,18 @@
 .dashboard-sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 /* Sidebar items */
 .dashboard-sidebar-nav div {
-  font-size: 0.95rem;
+  font-size: 1rem;
   transition: all 0.2s ease-in-out;
+}
+
+.dashboard-sidebar-nav svg {
+  width: 1.8rem;
+  height: 1.8rem;
 }
 
 .dashboard-sidebar-nav div:hover {
@@ -333,5 +339,11 @@
   .filter-btn, .export-btn {
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 470px) {
+  .tracking-input {
+    flex-direction: column;
   }
 }
