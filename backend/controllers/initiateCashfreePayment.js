@@ -1,4 +1,3 @@
-// controllers/paymentController.js
 import axios from 'axios';
 import Order from '../models/Order.js';
 
@@ -21,17 +20,16 @@ export const initiateCashfreePayment = async (req, res) => {
       return res.status(400).json({ message: 'OTP not verified for this order' });
     }
 
-
-
-    // Prepare payload for Cashfree
+    // Prepare payload for Cashfree 2023
+    const cfOrderId = `CF_${order._id.toString()}`; // Optional: prefix for tracking
     const payload = {
-      order_id: order._id.toString(),
-      order_amount: order.totalAmount, // Ensure this field exists
+      order_id: cfOrderId,
+      order_amount: order.totalAmount,
       order_currency: 'INR',
       customer_details: {
         customer_id: `user_${order._id}`,
         customer_email: order.email,
-        customer_name: order.name,
+        customer_name: order.customerName, // FIXED
         customer_phone: order.phone,
       },
       order_meta: {
@@ -40,13 +38,13 @@ export const initiateCashfreePayment = async (req, res) => {
       },
     };
 
-    // Send request to Cashfree
+    // Cashfree request
     const response = await axios.post(
       'https://api.cashfree.com/pg/orders',
       payload,
       {
         headers: {
-          'x-api-version': '2022-09-01',
+          'x-api-version': '2023-08-01', // ✅ Use latest version
           'x-client-id': process.env.CASHFREE_APP_ID,
           'x-client-secret': process.env.CASHFREE_SECRET_KEY,
           'Content-Type': 'application/json',
@@ -60,11 +58,17 @@ export const initiateCashfreePayment = async (req, res) => {
       return res.status(500).json({ message: 'Payment session not created' });
     }
 
-    // Send session ID to frontend
+    // ✅ Save to DB
+    order.cfOrderId = cfOrderId;
+    order.cfPaymentSessionId = payment_session_id;
+    await order.save();
+
+    // ✅ Respond
     res.status(200).json({
       payment_session_id,
       orderId: order._id,
     });
+
   } catch (err) {
     console.error('Cashfree initiation error:', err.response?.data || err.message);
     res.status(500).json({

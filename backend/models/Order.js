@@ -24,7 +24,7 @@ const orderSchema = new mongoose.Schema({
     default: 'pending',
   },
 
-    trackingId: {
+  trackingId: {
     type: String,
     default: null,
   },
@@ -34,21 +34,20 @@ const orderSchema = new mongoose.Schema({
     default: false,
   },
   verifiedAt: Date,
-
   otpGeneratedAt: Date,
-  //expiresAt: Date, // TTL
+  // expiresAt: Date, // TTL if needed
 
   totalAmount: Number,
   tax: Number,
   codFee: Number,
 
-  // Optional fields for Cashfree tracking
-  cfOrderId: String,
+  // ✅ Fields for Cashfree Payment Gateway
+  cfOrderId: {
+    type: String,
+    index: true, // 🔍 Makes queries faster in webhook handler
+  },
   cfPaymentSessionId: String,
   cfPaymentId: String,
 });
-
-// TTL index
-//orderSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 export default mongoose.model('Order', orderSchema);
