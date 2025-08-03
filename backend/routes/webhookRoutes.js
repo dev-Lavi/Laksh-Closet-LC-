@@ -1,13 +1,10 @@
+// webhookRouter.js
 import express from 'express';
 import { handleCashfreeWebhook } from '../controllers/webhookController.js';
 
 const router = express.Router();
 
-// Add raw body middleware specifically for this webhook route
-router.post(
-  '/',
-  express.raw({ type: 'application/json' }), // 👈 CRITICAL ADDITION
-  handleCashfreeWebhook
-);
+// Use standard JSON parser instead of raw body
+router.post('/', express.json(), handleCashfreeWebhook);
 
 export default router;
