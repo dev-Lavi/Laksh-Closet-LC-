@@ -3,7 +3,11 @@ import { handleCashfreeWebhook } from '../controllers/webhookController.js';
 
 const router = express.Router();
 
-// Only '/' since it's mounted on /api/webhook/payment
-router.post('/', handleCashfreeWebhook);
+// Add raw body middleware specifically for this webhook route
+router.post(
+  '/',
+  express.raw({ type: 'application/json' }), // 👈 CRITICAL ADDITION
+  handleCashfreeWebhook
+);
 
 export default router;

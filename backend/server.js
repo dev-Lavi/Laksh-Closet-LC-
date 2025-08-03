@@ -22,11 +22,7 @@ app.use(cors());
 app.use(helmet());
 
 // 🟡 Webhook route needs to come BEFORE express.json
-app.use(
-  '/api/webhook/payment',
-  bodyParser.raw({ type: '*/*' }), // Get raw body
-  webhookRoutes // ✅ Actually use the webhook route
-);
+app.use('/api/webhook/payment', webhookRoutes);
 
 // After webhook raw body
 app.use(express.json());
