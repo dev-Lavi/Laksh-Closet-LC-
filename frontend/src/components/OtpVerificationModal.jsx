@@ -8,49 +8,63 @@ const OtpVerificationModal = ({ isOpen, onClose, email, orderId }) => {
   const [loading, setLoading] = useState(false);
 
   const handleVerify = async () => {
-    if (!otp || otp.length !== 6) {
-      return toast.error("Enter a valid 6-digit OTP");
+  if (!otp || otp.length !== 6) {
+    return toast.error("Enter a valid 6-digit OTP");
+  }
+
+  setLoading(true);
+  try {
+    const token = localStorage.getItem('token'); // Get token from localStorage
+    if (!token) {
+      throw new Error("User not authenticated. Please login again.");
     }
 
-    setLoading(true);
-    try {
-      // Step 1: Verify OTP
-      const res = await axios.post(
-        `${import.meta.env.VITE_RENDER_EXTERNAL_URL}/api/checkout/verify-otp`,
-        { email, otp, orderId }
-      );
-      toast.success(res.data.message);
+    // Step 1: Verify OTP
+    const res = await axios.post(
+      `${import.meta.env.VITE_RENDER_EXTERNAL_URL}/api/checkout/verify-otp`,
+      { email, otp, orderId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // 🔐 Required for protected routes
+        },
+      }
+    );
+    toast.success(res.data.message);
 
-      // Step 2: Initiate Cashfree Payment
-      const payRes = await axios.post(
-        `${import.meta.env.VITE_RENDER_EXTERNAL_URL}/api/payment/initiate`,
-        { orderId }
-      );
+    // Step 2: Initiate Cashfree Payment
+    const payRes = await axios.post(
+      `${import.meta.env.VITE_RENDER_EXTERNAL_URL}/api/payment/initiate`,
+      { orderId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Also needed if this is protected
+        },
+      }
+    );
 
-      const sessionId = payRes.data.payment_session_id;
-      console.log('Received session ID:', sessionId);
+    const sessionId = payRes.data.payment_session_id;
+    console.log('Received session ID:', sessionId);
 
-      if (!window.Cashfree) {
+    if (!window.Cashfree) {
       toast.error("Cashfree SDK not loaded. Try again later.");
       return;
     }
 
-      // Step 3: Redirect to Cashfree Hosted Checkout using SDK
-const cashfree = window.Cashfree({ mode: 'production' });
+    // Step 3: Redirect to Cashfree Hosted Checkout using SDK
+    const cashfree = window.Cashfree({ mode: 'production' });
+    cashfree.checkout({
+      paymentSessionId: sessionId,
+      redirectTarget: "_self",
+    });
 
-cashfree.checkout({
-  paymentSessionId: sessionId,
-  redirectTarget: "_self", // You can also use "_blank", "_modal", or a DOM element
-});
+  } catch (err) {
+    console.error(err);
+    toast.error(err.response?.data?.message || 'Something went wrong');
+  } finally {
+    setLoading(false);
+  }
+};
 
-
-    } catch (err) {
-      console.error(err);
-      toast.error(err.response?.data?.message || 'Something went wrong');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (!isOpen) return null;
 
