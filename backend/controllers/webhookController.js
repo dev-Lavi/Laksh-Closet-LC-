@@ -3,47 +3,58 @@ import Order from '../models/Order.js';
 
 export const handleCashfreeWebhook = async (req, res) => {
   try {
-    // 1. Raw body for signature verification
-    const rawBody = JSON.stringify(req.body);
-    const signature = req.headers['x-cf-signature'];
+    console.log('📥 Webhook received from Cashfree');
+    const rawBody = req.body.toString(); // Raw buffer as string
+    const timestamp = req.headers['x-webhook-timestamp'];
+    const signature = req.headers['x-webhook-signature'];
 
-    // 2. Verify signature using your Cashfree webhook secret
+    console.log('Raw body:', req.body.toString());
+console.log('Received timestamp:', req.headers['x-webhook-timestamp']);
+console.log('Received signature:', req.headers['x-webhook-signature']);
+
+    if (!timestamp || !signature) {
+      console.warn('⚠️ Missing required headers');
+      return res.status(400).json({ message: 'Missing headers' });
+    }
+
+    // Step 1: Construct signed payload
+    const signedPayload = timestamp + rawBody;
+
+    // Step 2: Generate expected signature
     const expectedSignature = crypto
       .createHmac('sha256', process.env.CASHFREE_WEBHOOK_SECRET)
-      .update(rawBody)
+      .update(signedPayload)
       .digest('base64');
 
+    // Step 3: Compare signatures
     if (signature !== expectedSignature) {
-      console.warn('⚠️ Invalid webhook signature');
+      console.warn('❌ Invalid webhook signature');
       return res.status(401).json({ message: 'Invalid signature' });
     }
 
-    const event = req.body.event;
-    const data = req.body.data;
+    // Step 4: Parse raw JSON after verifying signature
+    const parsedBody = JSON.parse(rawBody);
+    const event = parsedBody.event;
+    const data = parsedBody.data;
 
-    // 3. Extract orderId and payment details
     const cfOrderId = data.order.order_id;
     const cfPaymentId = data.payment.payment_id;
     const paymentStatus = data.payment.payment_status;
 
-    // 4. Find the order in MongoDB
-    const order = await Order.findById(cfOrderId);
+    // Step 5: Lookup order using cfOrderId (not _id)
+    const order = await Order.findOne({ cfOrderId });
     if (!order) {
+      console.warn(`⚠️ Order not found for cfOrderId: ${cfOrderId}`);
       return res.status(404).json({ message: 'Order not found' });
     }
 
-    // 5. Update order based on payment status
-    if (paymentStatus === 'SUCCESS') {
-      order.paymentStatus = 'paid';
-      order.cfPaymentId = cfPaymentId;
-      order.cfOrderId = cfOrderId;
-    } else if (paymentStatus === 'FAILED') {
-      order.paymentStatus = 'failed';
-      order.cfPaymentId = cfPaymentId;
-      order.cfOrderId = cfOrderId;
-    }
+    // Step 6: Update order payment status
+    order.paymentStatus = paymentStatus === 'SUCCESS' ? 'paid' : 'failed';
+    order.cfPaymentId = cfPaymentId;
+    order.cfOrderId = cfOrderId;
 
     await order.save();
+
     console.log(`✅ Order ${cfOrderId} updated to ${order.paymentStatus}`);
 
     return res.status(200).json({ message: 'Webhook received successfully' });

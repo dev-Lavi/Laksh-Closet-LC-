@@ -21,6 +21,13 @@ const app = express();
 
 // Middleware
 app.use(cors());
+
+app.use(
+  '/api/webhook',
+  express.raw({ type: 'application/json' }), // Important for Cashfree verification
+  webhookRoutes
+);
+
 app.use(express.json());
 app.use(helmet());
 
@@ -33,11 +40,7 @@ app.get('/ping', (req, res) => {
   res.send('pong');
 });
 
-app.use(
-  '/api/webhook',
-  express.raw({ type: 'application/json' }), // Important for Cashfree verification
-  webhookRoutes
-);
+
 
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
