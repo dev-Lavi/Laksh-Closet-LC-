@@ -1,19 +1,17 @@
-import express from 'express';
+import express from 'express'; 
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import fetch from 'node-fetch'; // For self-ping
+import fetch from 'node-fetch';
 import helmet from 'helmet';
+import bodyParser from 'body-parser';
 
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import checkoutRoutes from './routes/checkoutRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import webhookRoutes from './routes/webhookRoutes.js';
-import orderRoutes from './routes/orderRoutes.js'; 
-
-
-// import adminRoutes from './routes/adminRoutes.js'; // Optional: If admin features are separated
+import orderRoutes from './routes/orderRoutes.js';
 
 dotenv.config();
 
@@ -21,17 +19,19 @@ const app = express();
 
 // Middleware
 app.use(cors());
-
-app.use(
-  '/api/webhook',
-  express.raw({ type: 'application/json' }), // Important for Cashfree verification
-  webhookRoutes
-);
-
-app.use(express.json());
 app.use(helmet());
 
-// Routes
+// 🟡 Webhook route needs to come BEFORE express.json
+app.use(
+  '/api/webhook/payment',
+  bodyParser.raw({ type: '*/*' }), // Get raw body
+  webhookRoutes // ✅ Actually use the webhook route
+);
+
+// After webhook raw body
+app.use(express.json());
+
+// Test route
 app.get('/', (req, res) => {
   res.send('✅ API is running...');
 });
@@ -40,24 +40,20 @@ app.get('/ping', (req, res) => {
   res.send('pong');
 });
 
-
-
+// Other API routes
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/checkout', checkoutRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/orders', orderRoutes);
 
-
-
+// Global error handler
 app.use((err, req, res, next) => {
   console.error('🔴 Unhandled error:', err.stack);
   res.status(500).json({ message: 'Something went wrong on the server.' });
 });
 
-// app.use('/api/admin', adminRoutes); 
-
-
+// MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -76,10 +72,10 @@ app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
 
-// Self-ping every 14 minutes to keep server active on Render
+// Self-ping for Render
 setInterval(() => {
   const url = `${process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`}/ping`;
   fetch(url)
     .then(() => console.log('📡 Self-ping sent'))
     .catch((err) => console.error('⚠️ Self-ping failed:', err.message));
-}, 14 * 60 * 1000); // every 14 minutes
+}, 14 * 60 * 1000);
