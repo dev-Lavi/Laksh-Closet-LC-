@@ -10,7 +10,25 @@ const orderSchema = new mongoose.Schema({
   state: String,
   address: String,
   pinCode: String,
-  cart: Array,
+
+  cart: [
+    {
+      productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true
+      },
+      quantity: {
+        type: Number,
+        required: true,
+        min: 1
+      },
+      size: {
+        type: String,
+        required: true
+      }
+    }
+  ],
 
   paymentMethod: String,
   paymentStatus: {
@@ -35,19 +53,19 @@ const orderSchema = new mongoose.Schema({
   },
   verifiedAt: Date,
   otpGeneratedAt: Date,
-  // expiresAt: Date, // TTL if needed
+  // expiresAt: Date,
 
   totalAmount: Number,
   tax: Number,
   codFee: Number,
 
-  // ✅ Fields for Cashfree Payment Gateway
   cfOrderId: {
     type: String,
-    index: true, // 🔍 Makes queries faster in webhook handler
+    index: true,
   },
   cfPaymentSessionId: String,
   cfPaymentId: String,
 });
+
 
 export default mongoose.model('Order', orderSchema);

@@ -64,6 +64,7 @@ const CheckoutInitiate = () => {
         cart: cartItems.map(item => ({
           productId: item._id,
           quantity: item.quantity,
+          size: item.selectedSize,
         })),
       };
 

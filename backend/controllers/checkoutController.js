@@ -39,16 +39,30 @@ export const initiateCheckout = async (req, res) => {
       return res.status(400).json({ message: 'Invalid payment method' });
     }
 
-    // 2️⃣ Calculate totals (temp price logic)
+        // Validate cart items have size
+    for (const item of cart) {
+      if (!item.productId || !item.quantity || !item.size) {
+        return res.status(400).json({ message: 'Each cart item must have productId, quantity, and size' });
+      }
+    }
+
+// 2️⃣ Calculate totals with size validation
 let subtotal = 0;
+const validatedCart = [];
 
 for (const item of cart) {
-  if (!item.productId || !item.quantity) continue;
+  if (!item.productId || !item.quantity || !item.size) continue;
 
   const product = await Product.findById(item.productId);
-  if (!product) continue; // or handle missing product error
+  if (!product) continue; // skip if product doesn't exist
 
   subtotal += product.price * item.quantity;
+
+  validatedCart.push({
+    productId: item.productId,
+    quantity: item.quantity,
+    size: item.size
+  });
 }
 
 
@@ -68,7 +82,7 @@ for (const item of cart) {
       state,
       address,
       pinCode,
-      cart,
+      cart: validatedCart,
       paymentMethod,
       paymentStatus: 'pending',
       deliveryStatus: 'pending',
