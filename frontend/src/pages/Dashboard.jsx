@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./DashboardSidebar.css";
 import logo from "../assets/logo.svg";
 import { useNavigate, useLocation } from "react-router-dom";
+import AdminLayout from '../components/AdminLayout';
 
 // Main Component
 export default function OrdersDashboard() {
@@ -62,27 +63,28 @@ export default function OrdersDashboard() {
   const unshippedOrders = orders.filter((o) => o.deliveryStatus === "pending");
 
   return (
+    <AdminLayout pageTitle="Dashboard">
     <div className="flex min-h-screen bg-[#F8F9FC]">
       <ToastContainer position="top-right" autoClose={3000} />
 
-      {/* Mobile Hamburger */}
+      {/* Mobile Hamburger
       <button
         className="md:hidden absolute top-4 left-4 z-30 p-2 rounded-full border bg-white shadow"
         onClick={() => setSidebarOpen(true)}
       >
         <Menu size={28} />
-      </button>
+      </button> */}
 
       {/* Sidebar */}
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      {/* <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
 
       {/* Overlay for mobile */}
-      {sidebarOpen && (
+      {/* {sidebarOpen && (
         <div
           className="fixed inset-0 bg-opacity-20 z-30 md:hidden"
           onClick={() => setSidebarOpen(false)}
         />
-      )}
+      )} */}
 
       {/* Main */}
       <main className="dashboard-main-content p-6 w-full">
@@ -123,53 +125,54 @@ export default function OrdersDashboard() {
         )}
       </main>
     </div>
+    </AdminLayout>
   );
 }
 
-// Sidebar
-const Sidebar = ({ sidebarOpen, setSidebarOpen }) => (
-  <aside
-    className={`dashboard-sidebar fixed top-0 left-0 z-40 h-screen transition-transform duration-300 ${
-      sidebarOpen ? "translate-x-0" : "-translate-x-full"
-    } md:relative md:translate-x-0`}
-  >
-    <div className="dashboard-sidebar-logo flex justify-between items-center p-4">
-      <img src={logo} alt="Laksh closet" className="h-12" />
-      <button
-        className="md:hidden p-2 rounded-full border bg-white shadow"
-        onClick={() => setSidebarOpen(false)}
-      >
-        <X size={24} />
-      </button>
-    </div>
-    <nav className="dashboard-sidebar-nav">
-      <SidebarItem icon={<Home size={18} />} label="Dashboard" to="/dashboard" />
-      <SidebarItem icon={<Package size={18} />} label="Update Product" to="/admin/update-product" />
-      <SidebarItem icon={<CreditCard size={18} />} label="Add Product" to="/admin/add-product" />
-      <SidebarItem icon={<CreditCard size={18} />} label="Delete Product" to="/admin/delete-product" />
-      <SidebarItem icon={<User size={18} />} label="User" to="/user" />
-    </nav>
-  </aside>
-);
+// // Sidebar
+// const Sidebar = ({ sidebarOpen, setSidebarOpen }) => (
+//   <aside
+//     className={`dashboard-sidebar fixed top-0 left-0 z-40 h-screen transition-transform duration-300 ${
+//       sidebarOpen ? "translate-x-0" : "-translate-x-full"
+//     } md:relative md:translate-x-0`}
+//   >
+//     <div className="dashboard-sidebar-logo flex justify-between items-center p-4">
+//       <img src={logo} alt="Laksh closet" className="h-12" />
+//       <button
+//         className="md:hidden p-2 rounded-full border bg-white shadow"
+//         onClick={() => setSidebarOpen(false)}
+//       >
+//         <X size={24} />
+//       </button>
+//     </div>
+//     <nav className="dashboard-sidebar-nav">
+//       <SidebarItem icon={<Home size={18} />} label="Dashboard" to="/admin/Dashboard" />
+//       <SidebarItem icon={<Package size={18} />} label="Update Product" to="/admin/update-product/:id" />
+//       <SidebarItem icon={<CreditCard size={18} />} label="Add Product" to="/admin/add-product" />
+//       <SidebarItem icon={<CreditCard size={18} />} label="Products" to="/admin/products" />
+//       <SidebarItem icon={<User size={18} />} label="User" to="/user" />
+//     </nav>
+//   </aside>
+// );
 
-// Sidebar Item
-const SidebarItem = ({ icon, label, to }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const isActive = location.pathname === to;
+// // Sidebar Item
+// const SidebarItem = ({ icon, label, to }) => {
+//   const navigate = useNavigate();
+//   const location = useLocation();
+//   const isActive = location.pathname === to;
 
-  return (
-    <div
-      onClick={() => navigate(to)}
-      className={`flex items-center gap-2 p-3 cursor-pointer rounded-lg transition-colors ${
-        isActive ? "bg-[#A54AFF] text-white" : "text-gray-800 hover:bg-gray-100"
-      }`}
-    >
-      {icon}
-      <span>{label}</span>
-    </div>
-  );
-};
+//   return (
+//     <div
+//       onClick={() => navigate(to)}
+//       className={`flex items-center gap-2 p-3 cursor-pointer rounded-lg transition-colors ${
+//         isActive ? "bg-[#A54AFF] text-white" : "text-gray-800 hover:bg-gray-100"
+//       }`}
+//     >
+//       {icon}
+//       <span>{label}</span>
+//     </div>
+//   );
+// };
 
 // Order Section
 const OrderSection = ({ title, orders, trackingInputs, setTrackingInputs, markShipped, loadingOrderId, isPending }) => (

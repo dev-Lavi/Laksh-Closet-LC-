@@ -1,0 +1,11 @@
+.dashboard-main-content {
+  flex: 1;
+  min-height: 100vh;
+  padding-top: 4rem; /* Space for mobile hamburger */
+}
+
+@media (min-width: 768px) {
+  .dashboard-main-content {
+    padding-top: 1.5rem;
+  }
+}

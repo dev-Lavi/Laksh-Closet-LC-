@@ -94,14 +94,50 @@ export const addProduct = async (req, res) => {
   }
 };
 
+// @desc    Get all products (Admin only)
+// @route   GET /api/products/admin
+// @access  Private/Admin
+export const getAllProductsForAdmin = async (req, res) => {
+  try {
+    // Fetch products but only return first image from gallery
+    const products = await Product.find({}, {
+      name: 1,
+      price: 1,
+      category: 1,
+      createdAt: 1,
+      gallery: { $slice: 1 }  // return only the first image
+    }).sort({ createdAt: -1 });
+
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({
+      message: 'Failed to fetch products',
+      error: err.message
+    });
+  }
+};
+
+
 // @desc    Update product (Admin only)
 // @route   PUT /api/products/:id
 // @access  Private/Admin
 export const updateProduct = async (req, res) => {
   try {
-    const updated = await Product.findByIdAndUpdate(req.params.id, req.body, {
-      new: true
-    });
+    // Check for missing request body
+    if (!req.body || typeof req.body !== 'object') {
+      return res.status(400).json({ 
+        message: 'Invalid request body. Please send JSON data.' 
+      });
+    }
+
+    // Remove gallery from updateData if present
+    const { gallery, ...updateData } = req.body;
+
+    const updated = await Product.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true, runValidators: true }
+    );
 
     if (!updated) {
       return res.status(404).json({ message: 'Product not found' });
@@ -111,6 +147,30 @@ export const updateProduct = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       message: 'Failed to update product',
+      error: err.message
+    });
+  }
+};
+
+
+
+// @desc    Delete product (Admin only)
+// @route   DELETE /api/products/:id
+// @access  Private/Admin
+export const deleteProduct = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    await product.deleteOne();
+
+    res.json({ message: 'Product removed successfully' });
+  } catch (err) {
+    res.status(500).json({
+      message: 'Failed to delete product',
       error: err.message
     });
   }

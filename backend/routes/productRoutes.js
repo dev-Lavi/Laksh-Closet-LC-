@@ -2,13 +2,15 @@ import express from 'express';
 import multer from 'multer';
 import {
   addProduct,
-  updateProduct
+  updateProduct,
+  deleteProduct
 } from '../controllers/productController.js';
 
 import mongoose from 'mongoose';
 
 import Product from '../models/Product.js';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
+import { getAllProductsForAdmin } from '../controllers/productController.js';
 
 const router = express.Router();
 
@@ -62,12 +64,22 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+
+
+
 // @desc    Add new product (Admin only)
 // @route   POST /api/products
 router.post('/', protect, adminOnly, upload.array('images', 6), addProduct);
 
-// @desc    Update product (Admin only)
+// Fetch all products with one image (admin only)
+router.get('/list/admin', protect, adminOnly, getAllProductsForAdmin);
+
+// @desc    Update product (Admin only, no images update)
 // @route   PUT /api/products/:id
 router.put('/:id', protect, adminOnly, updateProduct);
+
+// @desc    Delete product (Admin only)
+// @route   DELETE /api/products/:id
+router.delete('/:id', protect, adminOnly, deleteProduct);
 
 export default router;

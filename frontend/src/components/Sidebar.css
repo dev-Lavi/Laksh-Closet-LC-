@@ -1,0 +1,37 @@
+/* Make the whole React app able to fill the viewport */
+html, body, #root { height: 100%; }
+
+/* The admin shell fills the viewport reliably on all browsers */
+.admin-shell{
+  display: flex;
+  height: 100vh;      /* fallback */
+  height: 100dvh;     /* dynamic viewport on mobile */
+}
+
+/* Sidebar: inherit the wrapper height and scroll if needed */
+.dashboard-sidebar{
+  height: 100% !important;   /* stretch to full wrapper height */
+  width: 16rem;              /* 64 (Tailwind w-64) */
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0,0,0,.06);
+  z-index: 40;
+}
+
+/* Let the nav take remaining vertical space and be scrollable */
+.dashboard-sidebar-nav{
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+/* Main content fills the rest and scrolls independently */
+.dashboard-main-content{
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* Mobile behavior: slide-in fixed sidebar */
+

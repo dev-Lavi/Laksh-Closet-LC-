@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './addproduct.css';
+import AdminLayout from '../components/AdminLayout';
 
 const ProductUploadForm = () => {
   const initialSizes = ["26", "28", "30", "32", "34", "36", "38", "40"].reduce(
@@ -95,7 +96,7 @@ const res = await axios.post(
   };
 
   return (
-    
+    <AdminLayout pageTitle="Dashboard">
     <div className="add-product-card">
       <form onSubmit={handleSubmit} className="add-product-form">
         <h2 className="add-product-title">Upload Product</h2>
@@ -179,6 +180,7 @@ const res = await axios.post(
         </button>
       </form>
     </div>
+    </AdminLayout>
   );
 };
 
