@@ -105,7 +105,7 @@ for (const item of cart) {
 
     // 5️⃣ Send OTP to email
     await transporter.sendMail({
-      from: process.env.MAIL_USER,
+      from: '"Laksh Closet" <no-reply@lakshcloset.com>',
       to: email,
       subject: 'Your Checkout OTP',
         html: `<body style="font-family: 'Karla', sans-serif; line-height: 1.6; color: #333; background-color: #fafafa; margin: 0; padding: 0;">
