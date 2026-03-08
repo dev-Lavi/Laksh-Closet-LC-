@@ -6,7 +6,6 @@
 
 ## 🔗 Live Demo
 
-🚀 [Coming Soon](#)
 
 ---
 
